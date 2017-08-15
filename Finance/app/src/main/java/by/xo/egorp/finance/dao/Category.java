@@ -19,6 +19,7 @@ public class Category {
 
     @Id(autoincrement = true)
     private Long id;
+    private Boolean categoryType;
     private String categoryName;
     private long categoryIconId;
 
@@ -53,8 +54,9 @@ public class Category {
     }
 
     @Generated
-    public Category(Long id, String categoryName, long categoryIconId) {
+    public Category(Long id, Boolean categoryType, String categoryName, long categoryIconId) {
         this.id = id;
+        this.categoryType = categoryType;
         this.categoryName = categoryName;
         this.categoryIconId = categoryIconId;
     }
@@ -72,6 +74,14 @@ public class Category {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getCategoryType() {
+        return categoryType;
+    }
+
+    public void setCategoryType(Boolean categoryType) {
+        this.categoryType = categoryType;
     }
 
     public String getCategoryName() {

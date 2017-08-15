@@ -92,6 +92,7 @@ public class MainGenerator {
     private static Entity addCategoryEntities(final Schema schema) {
         category = schema.addEntity("Category");
         category.addIdProperty().primaryKey().autoincrement();
+        category.addBooleanProperty("categoryType");
         category.addStringProperty("categoryName");
 
         Property categoryIconId = category.addLongProperty("categoryIconId").notNull().getProperty();

@@ -26,8 +26,9 @@ public class CategoryDao extends AbstractDao<Category, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property CategoryName = new Property(1, String.class, "categoryName", false, "CATEGORY_NAME");
-        public final static Property CategoryIconId = new Property(2, long.class, "categoryIconId", false, "CATEGORY_ICON_ID");
+        public final static Property CategoryType = new Property(1, Boolean.class, "categoryType", false, "CATEGORY_TYPE");
+        public final static Property CategoryName = new Property(2, String.class, "categoryName", false, "CATEGORY_NAME");
+        public final static Property CategoryIconId = new Property(3, long.class, "categoryIconId", false, "CATEGORY_ICON_ID");
     }
 
     private DaoSession daoSession;
@@ -47,8 +48,9 @@ public class CategoryDao extends AbstractDao<Category, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CATEGORY\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"CATEGORY_NAME\" TEXT," + // 1: categoryName
-                "\"CATEGORY_ICON_ID\" INTEGER NOT NULL );"); // 2: categoryIconId
+                "\"CATEGORY_TYPE\" INTEGER," + // 1: categoryType
+                "\"CATEGORY_NAME\" TEXT," + // 2: categoryName
+                "\"CATEGORY_ICON_ID\" INTEGER NOT NULL );"); // 3: categoryIconId
     }
 
     /** Drops the underlying database table. */
@@ -66,11 +68,16 @@ public class CategoryDao extends AbstractDao<Category, Long> {
             stmt.bindLong(1, id);
         }
  
+        Boolean categoryType = entity.getCategoryType();
+        if (categoryType != null) {
+            stmt.bindLong(2, categoryType ? 1L: 0L);
+        }
+ 
         String categoryName = entity.getCategoryName();
         if (categoryName != null) {
-            stmt.bindString(2, categoryName);
+            stmt.bindString(3, categoryName);
         }
-        stmt.bindLong(3, entity.getCategoryIconId());
+        stmt.bindLong(4, entity.getCategoryIconId());
     }
 
     @Override
@@ -82,11 +89,16 @@ public class CategoryDao extends AbstractDao<Category, Long> {
             stmt.bindLong(1, id);
         }
  
+        Boolean categoryType = entity.getCategoryType();
+        if (categoryType != null) {
+            stmt.bindLong(2, categoryType ? 1L: 0L);
+        }
+ 
         String categoryName = entity.getCategoryName();
         if (categoryName != null) {
-            stmt.bindString(2, categoryName);
+            stmt.bindString(3, categoryName);
         }
-        stmt.bindLong(3, entity.getCategoryIconId());
+        stmt.bindLong(4, entity.getCategoryIconId());
     }
 
     @Override
@@ -104,8 +116,9 @@ public class CategoryDao extends AbstractDao<Category, Long> {
     public Category readEntity(Cursor cursor, int offset) {
         Category entity = new Category( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // categoryName
-            cursor.getLong(offset + 2) // categoryIconId
+            cursor.isNull(offset + 1) ? null : cursor.getShort(offset + 1) != 0, // categoryType
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // categoryName
+            cursor.getLong(offset + 3) // categoryIconId
         );
         return entity;
     }
@@ -113,8 +126,9 @@ public class CategoryDao extends AbstractDao<Category, Long> {
     @Override
     public void readEntity(Cursor cursor, Category entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setCategoryName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setCategoryIconId(cursor.getLong(offset + 2));
+        entity.setCategoryType(cursor.isNull(offset + 1) ? null : cursor.getShort(offset + 1) != 0);
+        entity.setCategoryName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setCategoryIconId(cursor.getLong(offset + 3));
      }
     
     @Override
