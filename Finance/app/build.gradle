@@ -7,7 +7,7 @@ android {
         applicationId "by.xo.egorp.finance"
         minSdkVersion 21
         targetSdkVersion 26
-        versionName '0.1'
+        versionName '0.1alfa'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -31,5 +31,4 @@ dependencies {
     compile 'com.android.support:design:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-
 }
