@@ -23,7 +23,7 @@ public class WalletIconDao extends AbstractDao<WalletIcon, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property WalletPic = new Property(1, String.class, "walletPic", false, "WALLET_PIC");
+        public final static Property WalletPic = new Property(1, Integer.class, "walletPic", false, "WALLET_PIC");
     }
 
 
@@ -40,7 +40,7 @@ public class WalletIconDao extends AbstractDao<WalletIcon, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"WALLET_ICON\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"WALLET_PIC\" TEXT);"); // 1: walletPic
+                "\"WALLET_PIC\" INTEGER);"); // 1: walletPic
     }
 
     /** Drops the underlying database table. */
@@ -58,9 +58,9 @@ public class WalletIconDao extends AbstractDao<WalletIcon, Long> {
             stmt.bindLong(1, id);
         }
  
-        String walletPic = entity.getWalletPic();
+        Integer walletPic = entity.getWalletPic();
         if (walletPic != null) {
-            stmt.bindString(2, walletPic);
+            stmt.bindLong(2, walletPic);
         }
     }
 
@@ -73,9 +73,9 @@ public class WalletIconDao extends AbstractDao<WalletIcon, Long> {
             stmt.bindLong(1, id);
         }
  
-        String walletPic = entity.getWalletPic();
+        Integer walletPic = entity.getWalletPic();
         if (walletPic != null) {
-            stmt.bindString(2, walletPic);
+            stmt.bindLong(2, walletPic);
         }
     }
 
@@ -88,7 +88,7 @@ public class WalletIconDao extends AbstractDao<WalletIcon, Long> {
     public WalletIcon readEntity(Cursor cursor, int offset) {
         WalletIcon entity = new WalletIcon( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // walletPic
+            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1) // walletPic
         );
         return entity;
     }
@@ -96,7 +96,7 @@ public class WalletIconDao extends AbstractDao<WalletIcon, Long> {
     @Override
     public void readEntity(Cursor cursor, WalletIcon entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setWalletPic(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setWalletPic(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
      }
     
     @Override

@@ -23,7 +23,7 @@ public class CategoryIconDao extends AbstractDao<CategoryIcon, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property CategoryPic = new Property(1, String.class, "categoryPic", false, "CATEGORY_PIC");
+        public final static Property CategoryPic = new Property(1, Integer.class, "categoryPic", false, "CATEGORY_PIC");
     }
 
 
@@ -40,7 +40,7 @@ public class CategoryIconDao extends AbstractDao<CategoryIcon, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CATEGORY_ICON\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"CATEGORY_PIC\" TEXT);"); // 1: categoryPic
+                "\"CATEGORY_PIC\" INTEGER);"); // 1: categoryPic
     }
 
     /** Drops the underlying database table. */
@@ -58,9 +58,9 @@ public class CategoryIconDao extends AbstractDao<CategoryIcon, Long> {
             stmt.bindLong(1, id);
         }
  
-        String categoryPic = entity.getCategoryPic();
+        Integer categoryPic = entity.getCategoryPic();
         if (categoryPic != null) {
-            stmt.bindString(2, categoryPic);
+            stmt.bindLong(2, categoryPic);
         }
     }
 
@@ -73,9 +73,9 @@ public class CategoryIconDao extends AbstractDao<CategoryIcon, Long> {
             stmt.bindLong(1, id);
         }
  
-        String categoryPic = entity.getCategoryPic();
+        Integer categoryPic = entity.getCategoryPic();
         if (categoryPic != null) {
-            stmt.bindString(2, categoryPic);
+            stmt.bindLong(2, categoryPic);
         }
     }
 
@@ -88,7 +88,7 @@ public class CategoryIconDao extends AbstractDao<CategoryIcon, Long> {
     public CategoryIcon readEntity(Cursor cursor, int offset) {
         CategoryIcon entity = new CategoryIcon( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // categoryPic
+            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1) // categoryPic
         );
         return entity;
     }
@@ -96,7 +96,7 @@ public class CategoryIconDao extends AbstractDao<CategoryIcon, Long> {
     @Override
     public void readEntity(Cursor cursor, CategoryIcon entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setCategoryPic(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setCategoryPic(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
      }
     
     @Override

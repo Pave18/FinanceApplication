@@ -15,7 +15,7 @@ public class WalletIcon {
 
     @Id(autoincrement = true)
     private Long id;
-    private String walletPic;
+    private Integer walletPic;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -29,7 +29,7 @@ public class WalletIcon {
     }
 
     @Generated
-    public WalletIcon(Long id, String walletPic) {
+    public WalletIcon(Long id, Integer walletPic) {
         this.id = id;
         this.walletPic = walletPic;
     }
@@ -42,11 +42,11 @@ public class WalletIcon {
         this.id = id;
     }
 
-    public String getWalletPic() {
+    public Integer getWalletPic() {
         return walletPic;
     }
 
-    public void setWalletPic(String walletPic) {
+    public void setWalletPic(Integer walletPic) {
         this.walletPic = walletPic;
     }
 

@@ -15,7 +15,7 @@ public class CategoryIcon {
 
     @Id(autoincrement = true)
     private Long id;
-    private String categoryPic;
+    private Integer categoryPic;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -29,7 +29,7 @@ public class CategoryIcon {
     }
 
     @Generated
-    public CategoryIcon(Long id, String categoryPic) {
+    public CategoryIcon(Long id, Integer categoryPic) {
         this.id = id;
         this.categoryPic = categoryPic;
     }
@@ -42,11 +42,11 @@ public class CategoryIcon {
         this.id = id;
     }
 
-    public String getCategoryPic() {
+    public Integer getCategoryPic() {
         return categoryPic;
     }
 
-    public void setCategoryPic(String categoryPic) {
+    public void setCategoryPic(Integer categoryPic) {
         this.categoryPic = categoryPic;
     }
 

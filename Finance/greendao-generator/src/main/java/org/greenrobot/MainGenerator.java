@@ -47,7 +47,7 @@ public class MainGenerator {
     private static Entity addWalletIconEntities(final Schema schema) {
         walletIcon = schema.addEntity("WalletIcon");
         walletIcon.addIdProperty().primaryKey().autoincrement();
-        walletIcon.addStringProperty("walletPic");
+        walletIcon.addIntProperty("walletPic");
         return walletIcon;
     }
 
@@ -76,7 +76,7 @@ public class MainGenerator {
     private static Entity addCategoryIconEntities(final Schema schema) {
         categoryIcon = schema.addEntity("CategoryIcon");
         categoryIcon.addIdProperty().primaryKey().autoincrement();
-        categoryIcon.addStringProperty("categoryPic");
+        categoryIcon.addIntProperty("categoryPic");
         return categoryIcon;
     }
 
