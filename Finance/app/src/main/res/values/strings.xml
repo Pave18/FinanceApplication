@@ -5,4 +5,65 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_home">Home</string>
+    <string name="action_wallets">Wallets</string>
+    <string name="action_money_transfers">Money transfers</string>
+
+    <string name="title_activity_wallets">WalletsActivity</string>
+    <string name="title_wallet_name">Wallet name</string>
+    <string name="title_currency">Currency</string>
+    <string name="title_balance">Balance</string>
+    <string name="title_icon">Icon</string>
+    <string name="title_save">Save</string>
+    <string name="title_wallet_insert">Wallet inserted</string>
+    <string name="title_wallet_updated">Wallet updated</string>
+    <string name="title_wallet_delete">Wallet delete</string>
+
+    <!--___Currency___-->
+    <string name="name_byn">Belarusian Ruble</string>
+    <string name="name_eur">Euro</string>
+    <string name="name_usd">US Dollar</string>
+    <string name="name_rub">Russian Ruble</string>
+    <string name="name_gbp">Pound Sterling</string>
+    <string name="name_aud">Australian Dollar</string>
+    <string name="name_nzd">New Zealand Dollar</string>
+    <string name="name_cad">Canadian Dollar</string>
+    <string name="name_chf">Swiss Franc</string>
+    <string name="name_jpy">Yen</string>
+    <string name="name_cny">Yuan Renminbi</string>
+
+    <!--Category-->
+    <string name="name_auto">Auto</string>
+    <string-array name="auto">
+        <item>Autoinsurance</item>
+        <item>Taxes and duties</item>
+        <item>Maintenance and Spare Parts</item>
+        <item>Paid parking</item>
+        <item>Buying a car</item>
+        <item>Repair</item>
+        <item>Fuel</item>
+    </string-array>
+
+    <string name="name_bank">Bank</string>
+    <string-array name="bank">
+        <item>Commission</item>
+        <item>Payment for bank services</item>
+        <item>Interest</item>
+    </string-array>
+
+    <string name="name_house">House</string>
+    <string-array name="house">
+        <item>Rent</item>
+        <item>Purchase of furniture</item>
+        <item>Purchase tableware</item>
+        <item>Repair</item>
+        <item>Electronics and software</item>
+    </string-array>
+
+    <string name="name_pets">Pets</string>
+    <string-array name="pets">
+        <item>Veterinary services</item>
+        <item>Feed</item>
+        <item>Hotel for animals</item>
+    </string-array>
 </resources>

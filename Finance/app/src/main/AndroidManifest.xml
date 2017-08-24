@@ -22,9 +22,12 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.WalletsActivity"
+            android:label="@string/title_activity_wallets"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.AddNewWalletActivity"></activity>
     </application>
 
 </manifest>
