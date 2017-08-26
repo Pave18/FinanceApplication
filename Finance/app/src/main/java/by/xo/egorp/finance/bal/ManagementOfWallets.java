@@ -1,10 +1,8 @@
 package by.xo.egorp.finance.bal;
 
-
-import android.content.Intent;
-
 import java.util.List;
 
+import by.xo.egorp.finance.AppController;
 import by.xo.egorp.finance.dao.Currency;
 import by.xo.egorp.finance.dao.CurrencyDao;
 import by.xo.egorp.finance.dao.DaoSession;
@@ -23,8 +21,8 @@ public class ManagementOfWallets {
     private List<Currency> currencies;
     private List<Wallet> wallets;
 
-    public ManagementOfWallets(DaoSession daoSession) {
-        this.daoSession = daoSession;
+    public ManagementOfWallets() {
+        this.daoSession = AppController.getDaoSession();
 
         walletIconDao = this.daoSession.getWalletIconDao();
         currencyDao = this.daoSession.getCurrencyDao();
@@ -34,6 +32,7 @@ public class ManagementOfWallets {
         getAllCurrencies();
         getAllWallets();
     }
+
 
     public void addWalletIcon(Integer walletPic) {
         WalletIcon tempWalletIcon = new WalletIcon();
@@ -85,5 +84,7 @@ public class ManagementOfWallets {
         wallets = walletDao.loadAll();
         return wallets;
     }
+
+
 }
 

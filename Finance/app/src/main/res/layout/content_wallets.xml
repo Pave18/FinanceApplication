@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="by.xo.egorp.finance.activities.WalletsActivity"
-    tools:showIn="@layout/activity_wallets">
+    tools:showIn="@layout/fragment_wallets">
 
     <ListView
         android:id="@+id/lvWallets"

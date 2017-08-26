@@ -1,27 +1,27 @@
-package by.xo.egorp.finance.activities;
+package by.xo.egorp.finance.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.app.Fragment;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import by.xo.egorp.finance.AppController;
 import by.xo.egorp.finance.R;
+import by.xo.egorp.finance.activities.ActivityAddNewWallet;
+import by.xo.egorp.finance.adapters.AdapterWallet;
 import by.xo.egorp.finance.bal.ManagementOfWallets;
-import by.xo.egorp.finance.adapters.WalletAdapter;
 import by.xo.egorp.finance.dao.Wallet;
 
-public class WalletsActivity extends AppCompatActivity {
+public class FragmentWallets extends Fragment {
 
     private static final int CM_DELETE_ID = 1;
     private static final int CM_UPDATE_ID = 2;
@@ -29,47 +29,41 @@ public class WalletsActivity extends AppCompatActivity {
     ManagementOfWallets managementOfWallets;
 
     ArrayList<Wallet> walletArrayList;
-    WalletAdapter walletAdapter;
+    AdapterWallet adapterWallet;
 
     ListView lvWallets;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wallets);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_wallets, null);
 
-        managementOfWallets = new ManagementOfWallets(((AppController) getApplication()).getDaoSession());
+        managementOfWallets = new ManagementOfWallets();
 
         walletArrayList = new ArrayList<>();
         walletArrayList.addAll(managementOfWallets.getAllWallets());
-        walletAdapter = new WalletAdapter(this, walletArrayList);
+        adapterWallet = new AdapterWallet(FragmentWallets.this.getActivity(), walletArrayList);
 
-        lvWallets = (ListView) findViewById(R.id.lvWallets);
-        lvWallets.setAdapter(walletAdapter);
+        lvWallets = v.findViewById(R.id.lvWallets);
+        lvWallets.setAdapter(adapterWallet);
         registerForContextMenu(lvWallets);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = v.findViewById(R.id.fab_add_new_wallet);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityAddNewWallets();
+                startActivityAddNewWallet();
             }
         });
+
+        return v;
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         fetchWalletList();
-    }
-
-    private void fetchWalletList() {
-        walletArrayList.clear();
-        walletArrayList.addAll(managementOfWallets.getAllWallets());
-        walletAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -88,31 +82,36 @@ public class WalletsActivity extends AppCompatActivity {
 
             managementOfWallets.delWallet(walletArrayList.get(acmi.position));
             walletArrayList.remove(acmi.position);
-            walletAdapter.notifyDataSetChanged();
+            adapterWallet.notifyDataSetChanged();
 
             return true;
         } else if (item.getItemId() == CM_UPDATE_ID) {
 
-            startActivityAddNewWallets(walletArrayList.get(acmi.position));
+            startActivityAddNewWallet(walletArrayList.get(acmi.position));
             return true;
         }
         return super.onContextItemSelected(item);
     }
 
+    private void fetchWalletList() {
+        walletArrayList.clear();
+        walletArrayList.addAll(managementOfWallets.getAllWallets());
+        adapterWallet.notifyDataSetChanged();
+    }
 
     //For create
-    private void startActivityAddNewWallets() {
-        Intent intent = new Intent(this, AddNewWalletActivity.class);
+    private void startActivityAddNewWallet() {
+        Intent intent = new Intent(FragmentWallets.this.getActivity(), ActivityAddNewWallet.class);
         intent.putExtra("create", true);
         startActivity(intent);
     }
 
     //For update
-    private void startActivityAddNewWallets(Wallet wallet) {
-        Intent intent = new Intent(this, AddNewWalletActivity.class);
+    private void startActivityAddNewWallet(Wallet wallet) {
+        Intent intent = new Intent(FragmentWallets.this.getActivity(), ActivityAddNewWallet.class);
         intent.putExtra("create", false);
         intent.putExtra("wallet", (Parcelable) wallet);
         startActivity(intent);
     }
-
 }
+

@@ -11,16 +11,15 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import by.xo.egorp.finance.AppController;
 import by.xo.egorp.finance.R;
-import by.xo.egorp.finance.adapters.CurrencyAdapter;
-import by.xo.egorp.finance.adapters.WalletIconAdapter;
+import by.xo.egorp.finance.adapters.AdapterCurrency;
+import by.xo.egorp.finance.adapters.AdapterWalletIcon;
 import by.xo.egorp.finance.bal.ManagementOfWallets;
 import by.xo.egorp.finance.dao.Currency;
 import by.xo.egorp.finance.dao.Wallet;
 import by.xo.egorp.finance.dao.WalletIcon;
 
-public class AddNewWalletActivity extends AppCompatActivity {
+public class ActivityAddNewWallet extends AppCompatActivity {
 
     ManagementOfWallets managementOfWallets;
     Wallet wallet;
@@ -29,10 +28,10 @@ public class AddNewWalletActivity extends AppCompatActivity {
 
     EditText editTextWalletName;
     Spinner spinnerCurrencies;
-    CurrencyAdapter currencyAdapter;
+    AdapterCurrency adapterCurrency;
     EditText editTextBalance;
     Spinner spinnerWalletIcons;
-    WalletIconAdapter walletIconAdapter;
+    AdapterWalletIcon adapterWalletIcon;
     Button buttonSaveWallet;
 
     @Override
@@ -40,7 +39,7 @@ public class AddNewWalletActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_wallet);
 
-        managementOfWallets = new ManagementOfWallets(((AppController) getApplication()).getDaoSession());
+        managementOfWallets = new ManagementOfWallets();
         wallet = new Wallet();
 
         createNew = true;
@@ -53,13 +52,13 @@ public class AddNewWalletActivity extends AppCompatActivity {
 
         ArrayList<Currency> arrayAdapterCurrency =
                 (ArrayList<Currency>) managementOfWallets.getAllCurrencies();
-        currencyAdapter = new CurrencyAdapter(this, arrayAdapterCurrency);
-        spinnerCurrencies.setAdapter(currencyAdapter);
+        adapterCurrency = new AdapterCurrency(this, arrayAdapterCurrency);
+        spinnerCurrencies.setAdapter(adapterCurrency);
 
         ArrayList<WalletIcon> arrayAdapterWalletIcon =
                 (ArrayList<WalletIcon>) managementOfWallets.getAllWalletIcons();
-        walletIconAdapter = new WalletIconAdapter(this, arrayAdapterWalletIcon);
-        spinnerWalletIcons.setAdapter(walletIconAdapter);
+        adapterWalletIcon = new AdapterWalletIcon(this, arrayAdapterWalletIcon);
+        spinnerWalletIcons.setAdapter(adapterWalletIcon);
 
         handleIntent(getIntent());
         setClickEventListener();

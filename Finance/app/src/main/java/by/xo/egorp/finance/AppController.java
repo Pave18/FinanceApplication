@@ -15,7 +15,7 @@ public class AppController extends Application {
     //With encryption, there is complexity so for now "False".
     public static final boolean ENCRYPTED = false;
 
-    private DaoSession daoSession;
+    private static DaoSession daoSession;
 
 
     @Override
@@ -30,7 +30,7 @@ public class AppController extends Application {
         fillingWithBaseValues();
     }
 
-    public DaoSession getDaoSession() {
+    public static DaoSession getDaoSession() {
         return daoSession;
     }
 
@@ -42,8 +42,8 @@ public class AppController extends Application {
 
     public void fillingWithBaseValues() {
 
-        ManagementOfWallets managementOfWallets = new ManagementOfWallets(getDaoSession());
-        ManagementOfCategories managementOfCategories = new ManagementOfCategories(getDaoSession());
+        ManagementOfWallets managementOfWallets = new ManagementOfWallets();
+        ManagementOfCategories managementOfCategories = new ManagementOfCategories();
 
         if (managementOfWallets.getAllWalletIcons().size() == 0) {
             managementOfWallets.addWalletIcon(R.drawable.ic_menu_camera);

@@ -1,10 +1,10 @@
 package by.xo.egorp.finance.activities;
 
-import android.content.Intent;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+
+import android.app.Fragment;
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,9 +15,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import by.xo.egorp.finance.R;
+import by.xo.egorp.finance.fragments.FragmentHome;
+import by.xo.egorp.finance.fragments.FragmentMoneyTransfers;
+import by.xo.egorp.finance.fragments.FragmentWallets;
 
-public class MainActivity extends AppCompatActivity
+public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,23 +31,20 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_home);
+        fragmentManager = getFragmentManager();
+
+        fragmentManager.beginTransaction().replace(R.id.content_main, new FragmentHome()).commit();
+
     }
 
     @Override
@@ -80,22 +82,37 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        Fragment fragment = null;
+        Class fragmentClass = null;
+
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-
-        } else if (id == R.id.nav_wallets) {
-            Intent intent = new Intent(this, WalletsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_money_transfers) {
-
-        } else if (id == R.id.nav_setting) {
+        if (id == R.id.nav_setting) {
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
+        } else {
+            if (id == R.id.nav_home) {
+                fragmentClass = FragmentHome.class;
+            } else if (id == R.id.nav_wallets) {
+                fragmentClass = FragmentWallets.class;
+            } else if (id == R.id.nav_money_transfers) {
+                fragmentClass = FragmentMoneyTransfers.class;
+            }
+
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            fragmentManager.beginTransaction().replace(R.id.content_main, fragment).commit();
+            item.setChecked(true);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

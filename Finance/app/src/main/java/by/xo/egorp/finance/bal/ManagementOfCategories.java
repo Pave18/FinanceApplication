@@ -2,6 +2,7 @@ package by.xo.egorp.finance.bal;
 
 import java.util.List;
 
+import by.xo.egorp.finance.AppController;
 import by.xo.egorp.finance.dao.Category;
 import by.xo.egorp.finance.dao.CategoryDao;
 import by.xo.egorp.finance.dao.CategoryIcon;
@@ -9,10 +10,6 @@ import by.xo.egorp.finance.dao.CategoryIconDao;
 import by.xo.egorp.finance.dao.DaoSession;
 import by.xo.egorp.finance.dao.Subcategory;
 import by.xo.egorp.finance.dao.SubcategoryDao;
-
-/**
- * Created by egorp on 16.08.2017.
- */
 
 public class ManagementOfCategories {
 
@@ -25,8 +22,8 @@ public class ManagementOfCategories {
     private List<Category> categories;
     private List<Subcategory> subcategories;
 
-    public ManagementOfCategories(DaoSession daoSession) {
-        this.daoSession = daoSession;
+    public ManagementOfCategories() {
+        this.daoSession = AppController.getDaoSession();
 
         categoryIconDao = this.daoSession.getCategoryIconDao();
         categoryDao = this.daoSession.getCategoryDao();
@@ -48,9 +45,9 @@ public class ManagementOfCategories {
         return categoryIcons;
     }
 
-    public CategoryIcon getLastAddedCategoryIcon(){
+    public CategoryIcon getLastAddedCategoryIcon() {
         List<CategoryIcon> tempCategoryIconList = getAllCategoryIcons();
-        return tempCategoryIconList.get(tempCategoryIconList.size()-1);
+        return tempCategoryIconList.get(tempCategoryIconList.size() - 1);
     }
 
     public void addCategory(boolean type, String categoryName, CategoryIcon categoryIcon) {
@@ -78,7 +75,7 @@ public class ManagementOfCategories {
 
     public long getLastAddedCategoryId() {
         List<Category> lastAddedCategory = getAllCategories();
-        return lastAddedCategory.get(lastAddedCategory.size()-1).getId();
+        return lastAddedCategory.get(lastAddedCategory.size() - 1).getId();
     }
 
     public void addSubcategory(String subcategoryName, long categoryId) {
