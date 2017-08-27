@@ -47,14 +47,15 @@ public class AdapterWalletIcon extends BaseAdapter {
             view = lInflater.inflate(R.layout.item_wallet_icon, parent, false);
         }
 
-        WalletIcon tempWalletIcon = getWallet(position);
+        WalletIcon tempWalletIcon = getWalletIcon(position);
 
-        ((ImageView) view.findViewById(R.id.ivWalletIcon)).setImageResource(tempWalletIcon.getWalletPic());
+        ((ImageView) view.findViewById(R.id.ivWalletIcon))
+                .setImageResource(tempWalletIcon.getWalletPic());
 
         return view;
     }
 
-    WalletIcon getWallet(int position) {
+    WalletIcon getWalletIcon(int position) {
         return (WalletIcon) getItem(position);
     }
 }

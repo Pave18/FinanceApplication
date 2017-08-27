@@ -47,15 +47,17 @@ public class AdapterCurrency extends BaseAdapter {
             view = lInflater.inflate(R.layout.item_currency, parent, false);
         }
 
-        Currency tempCurrency = getWallet(position);
+        Currency tempCurrency = getCurrency(position);
 
-        ((TextView) view.findViewById(R.id.tvCurrencyName)).setText(tempCurrency.getCurrencyName());
-        ((TextView) view.findViewById(R.id.tvCurrencyCode)).setText(tempCurrency.getCurrencyCode());
+        ((TextView) view.findViewById(R.id.tvCurrencyName))
+                .setText(tempCurrency.getCurrencyName());
+        ((TextView) view.findViewById(R.id.tvCurrencyCode))
+                .setText(tempCurrency.getCurrencyCode());
 
         return view;
     }
 
-    Currency getWallet(int position) {
+    Currency getCurrency(int position) {
         return (Currency) getItem(position);
     }
 }

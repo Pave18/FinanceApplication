@@ -1,6 +1,9 @@
 package by.xo.egorp.finance.bal;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import by.xo.egorp.finance.AppController;
 import by.xo.egorp.finance.dao.Currency;
@@ -74,17 +77,70 @@ public class ManagementOfWallets {
         getAllWallets();
     }
 
-    public void delWallet(long id) {
-        walletDao.deleteByKey(id);
-        getAllWallets();
-    }
-
 
     public List<Wallet> getAllWallets() {
         wallets = walletDao.loadAll();
         return wallets;
     }
 
+    public ArrayList<AmountTotal> getAmountTotalByCurrencies() {
+        List<Wallet> allWallets = getAllWallets();
+
+        List<Currency> currencies = searchAllTypeCurrency(allWallets);
+        List<Float> totals = amountTotalByCurrency(currencies, allWallets);
+
+
+        ArrayList<AmountTotal> tempAmountTotals = new ArrayList<>();
+
+        for (int i = 0; i < currencies.size(); ++i) {
+            tempAmountTotals.add(new AmountTotal(currencies.get(i), totals.get(i)));
+        }
+
+        return tempAmountTotals;
+    }
+
+    //Search of all types of currencies  from all wallets
+    private List<Currency> searchAllTypeCurrency(List<Wallet> allWallets) {
+
+        List<Currency> tempCurrencies = new ArrayList<>();
+
+        for (Wallet w : allWallets) {
+            Currency tempCurrency = w.getCurrency();
+            tempCurrencies.add(tempCurrency);
+        }
+
+        Set<Currency> uniqueCurrencies = new LinkedHashSet<>(tempCurrencies);
+
+        tempCurrencies.clear();
+        for (Currency c : uniqueCurrencies) {
+            tempCurrencies.add(c);
+        }
+
+        return tempCurrencies;
+    }
+
+    //Total amount by currency from all wallets
+    private List<Float> amountTotalByCurrency(List<Currency> currencies, List<Wallet> allWallets) {
+        List<Float> tempTotals = new ArrayList<>();
+
+        for (Currency c : currencies) {
+            tempTotals.add(0F);
+        }
+
+        for (Wallet w : allWallets) {
+            Currency tempCurrency = w.getCurrency();
+
+            for (int i = 0; i < currencies.size(); ++i) {
+                if (currencies.get(i).getCurrencyCode().
+                        equals(tempCurrency.getCurrencyCode())) {
+                    Float balance = tempTotals.get(i);
+                    balance += w.getBalance();
+                    tempTotals.set(i, balance);
+                }
+            }
+        }
+
+        return tempTotals;
+    }
 
 }
-
