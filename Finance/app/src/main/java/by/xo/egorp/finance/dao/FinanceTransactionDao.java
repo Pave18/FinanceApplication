@@ -33,6 +33,7 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
         public final static Property Photo = new Property(5, Byte.class, "photo", false, "PHOTO");
         public final static Property WalletId = new Property(6, long.class, "walletId", false, "WALLET_ID");
         public final static Property CategoryId = new Property(7, long.class, "categoryId", false, "CATEGORY_ID");
+        public final static Property SubcategoryId = new Property(8, Long.class, "subcategoryId", false, "SUBCATEGORY_ID");
     }
 
     private DaoSession daoSession;
@@ -58,7 +59,8 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
                 "\"DESCRIPTION\" TEXT," + // 4: description
                 "\"PHOTO\" INTEGER," + // 5: photo
                 "\"WALLET_ID\" INTEGER NOT NULL ," + // 6: walletId
-                "\"CATEGORY_ID\" INTEGER NOT NULL );"); // 7: categoryId
+                "\"CATEGORY_ID\" INTEGER NOT NULL ," + // 7: categoryId
+                "\"SUBCATEGORY_ID\" INTEGER);"); // 8: subcategoryId
     }
 
     /** Drops the underlying database table. */
@@ -102,6 +104,11 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
         }
         stmt.bindLong(7, entity.getWalletId());
         stmt.bindLong(8, entity.getCategoryId());
+ 
+        Long subcategoryId = entity.getSubcategoryId();
+        if (subcategoryId != null) {
+            stmt.bindLong(9, subcategoryId);
+        }
     }
 
     @Override
@@ -139,6 +146,11 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
         }
         stmt.bindLong(7, entity.getWalletId());
         stmt.bindLong(8, entity.getCategoryId());
+ 
+        Long subcategoryId = entity.getSubcategoryId();
+        if (subcategoryId != null) {
+            stmt.bindLong(9, subcategoryId);
+        }
     }
 
     @Override
@@ -162,7 +174,8 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // description
             cursor.isNull(offset + 5) ? null : (byte) cursor.getShort(offset + 5), // photo
             cursor.getLong(offset + 6), // walletId
-            cursor.getLong(offset + 7) // categoryId
+            cursor.getLong(offset + 7), // categoryId
+            cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8) // subcategoryId
         );
         return entity;
     }
@@ -177,6 +190,7 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
         entity.setPhoto(cursor.isNull(offset + 5) ? null : (byte) cursor.getShort(offset + 5));
         entity.setWalletId(cursor.getLong(offset + 6));
         entity.setCategoryId(cursor.getLong(offset + 7));
+        entity.setSubcategoryId(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
      }
     
     @Override
@@ -214,9 +228,12 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
             SqlUtils.appendColumns(builder, "T0", daoSession.getWalletDao().getAllColumns());
             builder.append(',');
             SqlUtils.appendColumns(builder, "T1", daoSession.getCategoryDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T2", daoSession.getSubcategoryDao().getAllColumns());
             builder.append(" FROM FINANCE_TRANSACTION T");
             builder.append(" LEFT JOIN WALLET T0 ON T.\"WALLET_ID\"=T0.\"_id\"");
             builder.append(" LEFT JOIN CATEGORY T1 ON T.\"CATEGORY_ID\"=T1.\"_id\"");
+            builder.append(" LEFT JOIN SUBCATEGORY T2 ON T.\"SUBCATEGORY_ID\"=T2.\"_id\"");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -237,6 +254,10 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
          if(category != null) {
             entity.setCategory(category);
         }
+        offset += daoSession.getCategoryDao().getAllColumns().length;
+
+        Subcategory subcategory = loadCurrentOther(daoSession.getSubcategoryDao(), cursor, offset);
+        entity.setSubcategory(subcategory);
 
         return entity;    
     }

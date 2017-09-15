@@ -27,7 +27,8 @@
             android:name=".activities.WalletsActivity"
             android:label="@string/title_activity_wallets"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.ActivityAddNewWallet"></activity>
+        <activity android:name=".activities.ActivityAddNewWallet" />
+        <activity android:name=".activities.ActivityAddNewTransaction"></activity>
     </application>
 
 </manifest>

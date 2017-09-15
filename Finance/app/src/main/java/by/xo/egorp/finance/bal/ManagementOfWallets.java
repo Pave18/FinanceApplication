@@ -83,7 +83,29 @@ public class ManagementOfWallets {
         return wallets;
     }
 
-    public ArrayList<AmountTotal> getAmountTotalByCurrencies() {
+    public void changeOfBalance(boolean income, Wallet wallet, float amount) {
+
+        Wallet tempWallet = wallet;
+        float newBalance = tempWallet.getBalance();
+
+        if (income) {
+            newBalance += amount;
+        } else {
+            newBalance -= amount;
+        }
+
+        tempWallet.setBalance(newBalance);
+
+        walletDao.update(tempWallet);
+    }
+
+    private AmountTotal totalAmountMainCurrency;
+
+    public AmountTotal getTotalAmountMainCurrency() {
+        return totalAmountMainCurrency;
+    }
+
+    public ArrayList<AmountTotal> getAmountTotalByCurrencies(String mainCurrencyCode) {
         List<Wallet> allWallets = getAllWallets();
 
         List<Currency> currencies = searchAllTypeCurrency(allWallets);
@@ -94,6 +116,19 @@ public class ManagementOfWallets {
 
         for (int i = 0; i < currencies.size(); ++i) {
             tempAmountTotals.add(new AmountTotal(currencies.get(i), totals.get(i)));
+        }
+
+        totalAmountMainCurrency = new AmountTotal();
+
+        for (int i = 0; i < tempAmountTotals.size(); ++i) {
+            if (tempAmountTotals.get(i).getCurrency().getCurrencyCode().equals(mainCurrencyCode)) {
+
+                totalAmountMainCurrency.setCurrency(tempAmountTotals.get(i).getCurrency());
+                totalAmountMainCurrency.setAmountTotal(tempAmountTotals.get(i).getAmountTotal());
+
+                tempAmountTotals.remove(i);
+                break;
+            }
         }
 
         return tempAmountTotals;
@@ -142,5 +177,7 @@ public class ManagementOfWallets {
 
         return tempTotals;
     }
+
+
 
 }

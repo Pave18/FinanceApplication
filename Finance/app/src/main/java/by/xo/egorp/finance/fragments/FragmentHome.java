@@ -1,5 +1,6 @@
 package by.xo.egorp.finance.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,13 +10,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import by.xo.egorp.finance.R;
 import by.xo.egorp.finance.adapters.AdapterAmountTotal;
 import by.xo.egorp.finance.bal.AmountTotal;
 import by.xo.egorp.finance.bal.ManagementOfWallets;
-import by.xo.egorp.finance.dao.Currency;
 
 
 public class FragmentHome extends Fragment {
@@ -26,9 +25,8 @@ public class FragmentHome extends Fragment {
     TextView tvMainCurrencyCode;
 
     ArrayList<AmountTotal> amountTotals;
+    AmountTotal totalAmountMainCurrency;
     String mainCurrencyCod = "BYN";
-    Currency mainCurrency;
-    Float mainTotal;
 
     ListView lvAmountTotals;
     AdapterAmountTotal adapterAmountTotal;
@@ -42,40 +40,18 @@ public class FragmentHome extends Fragment {
         managementOfWallets = new ManagementOfWallets();
 
         amountTotals = new ArrayList<>();
-        amountTotals.addAll(managementOfWallets.getAmountTotalByCurrencies());
+        amountTotals.addAll(managementOfWallets.getAmountTotalByCurrencies(mainCurrencyCod));
 
-        searchMainCurrencyTotal(mainCurrencyCod);
+        totalAmountMainCurrency = managementOfWallets.getTotalAmountMainCurrency();
 
         tvMainCurrencyTotal = v.findViewById(R.id.tvMainCurrencyTotal);
-        tvMainCurrencyTotal.setText(mainTotal.toString());
+        tvMainCurrencyTotal.setText(totalAmountMainCurrency.getAmountTotal().toString());
         tvMainCurrencyCode = v.findViewById(R.id.tvMainCurrencyCode);
-        tvMainCurrencyCode.setText(mainCurrency.getCurrencyCode());
+        tvMainCurrencyCode.setText(totalAmountMainCurrency.getCurrency().getCurrencyCode());
 
         adapterAmountTotal = new AdapterAmountTotal(FragmentHome.this.getActivity(), amountTotals);
         lvAmountTotals = v.findViewById(R.id.lvAmountTotals);
         lvAmountTotals.setAdapter(adapterAmountTotal);
         return v;
     }
-
-    private void searchMainCurrencyTotal(String mainCurrencyCode) {
-        List<Currency> currencies = new ArrayList<>();
-        List<Float> totals = new ArrayList<>();
-
-        for (AmountTotal at : amountTotals) {
-            currencies.add(at.getCurrency());
-            totals.add(at.getAmountTotal());
-        }
-
-        for (int i = 0; i < currencies.size(); ++i) {
-            if (currencies.get(i).getCurrencyCode().equals(mainCurrencyCode)) {
-
-                mainCurrency = currencies.get(i);
-                mainTotal = totals.get(i);
-
-                amountTotals.remove(i);
-                break;
-            }
-        }
-    }
-
 }

@@ -3,8 +3,9 @@ package by.xo.egorp.finance.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -26,34 +27,35 @@ public class ActivityAddNewWallet extends AppCompatActivity {
 
     Boolean createNew;
 
-    EditText editTextWalletName;
-    Spinner spinnerCurrencies;
+    EditText etWalletName;
+    Spinner spinCurrencies;
     AdapterCurrency adapterCurrency;
-    EditText editTextBalance;
+    EditText etBalance;
     Spinner spinnerWalletIcons;
     AdapterWalletIcon adapterWalletIcon;
-    Button buttonSaveWallet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_wallet);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAdd_wallets);
+
+        setSupportActionBar(toolbar);
 
         managementOfWallets = new ManagementOfWallets();
         wallet = new Wallet();
 
         createNew = true;
 
-        editTextWalletName = (EditText) findViewById(R.id.wallet_name);
-        spinnerCurrencies = (Spinner) findViewById(R.id.spinner_currencies);
-        editTextBalance = (EditText) findViewById(R.id.balance);
-        spinnerWalletIcons = (Spinner) findViewById(R.id.spinner_walletIcons);
-        buttonSaveWallet = (Button) findViewById(R.id.btn_save_wallet);
+        etWalletName = (EditText) findViewById(R.id.etWallet_name);
+        spinCurrencies = (Spinner) findViewById(R.id.spinnerCurrencies);
+        etBalance = (EditText) findViewById(R.id.etBalance);
+        spinnerWalletIcons = (Spinner) findViewById(R.id.spinnerWallet_icons);
 
         ArrayList<Currency> arrayAdapterCurrency =
                 (ArrayList<Currency>) managementOfWallets.getAllCurrencies();
         adapterCurrency = new AdapterCurrency(this, arrayAdapterCurrency);
-        spinnerCurrencies.setAdapter(adapterCurrency);
+        spinCurrencies.setAdapter(adapterCurrency);
 
         ArrayList<WalletIcon> arrayAdapterWalletIcon =
                 (ArrayList<WalletIcon>) managementOfWallets.getAllWalletIcons();
@@ -61,7 +63,28 @@ public class ActivityAddNewWallet extends AppCompatActivity {
         spinnerWalletIcons.setAdapter(adapterWalletIcon);
 
         handleIntent(getIntent());
-        setClickEventListener();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_save, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_save_wallet) {
+            if (createNew) {
+                saveItem(getResources().getString(R.string.title_wallet_insert));
+            } else {
+                saveItem(getResources().getString(R.string.title_wallet_updated));
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void handleIntent(Intent intent) {
@@ -69,33 +92,20 @@ public class ActivityAddNewWallet extends AppCompatActivity {
 
         if (!createNew) {
             wallet = (Wallet) intent.getSerializableExtra("wallet");
-            editTextWalletName.setText(wallet.getWalletName());
-            spinnerCurrencies.setSelection(
+            etWalletName.setText(wallet.getWalletName());
+            spinCurrencies.setSelection(
                     Integer.parseInt((wallet.getCurrency().getId()).toString()));
-            editTextBalance.setText(wallet.getBalance().toString());
+            etBalance.setText(wallet.getBalance().toString());
             spinnerWalletIcons.setSelection(
                     Integer.parseInt(wallet.getWalletIcon().getId().toString()));
         }
     }
 
-    private void setClickEventListener() {
-        buttonSaveWallet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (createNew) {
-                    saveItem(getResources().getString(R.string.title_wallet_insert));
-                } else {
-                    saveItem(getResources().getString(R.string.title_wallet_updated));
-                }
-            }
-        });
-    }
-
     private void saveItem(String mess) {
         if (checkToFinish()) {
-            managementOfWallets.addWallet(editTextWalletName.getText().toString(),
-                    (Currency) spinnerCurrencies.getSelectedItem(),
-                    Float.parseFloat(editTextBalance.getText().toString()),
+            managementOfWallets.addWallet(etWalletName.getText().toString(),
+                    (Currency) spinCurrencies.getSelectedItem(),
+                    Float.parseFloat(etBalance.getText().toString()),
                     (WalletIcon) spinnerWalletIcons.getSelectedItem());
             Toast.makeText(this, mess, Toast.LENGTH_SHORT).show();
             finish();
@@ -103,9 +113,9 @@ public class ActivityAddNewWallet extends AppCompatActivity {
     }
 
     boolean checkToFinish() {
-        if (editTextWalletName.getText().length() != 0 &&
-                spinnerCurrencies.getSelectedItem() != null &&
-                editTextWalletName.getText().length() != 0 &&
+        if (etWalletName.getText().length() != 0 &&
+                spinCurrencies.getSelectedItem() != null &&
+                etWalletName.getText().length() != 0 &&
                 spinnerWalletIcons.getSelectedItem() != null) {
             return true;
         }

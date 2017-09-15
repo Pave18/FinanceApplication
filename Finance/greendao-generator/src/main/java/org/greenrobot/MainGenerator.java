@@ -116,6 +116,8 @@ public class MainGenerator {
         transaction.addToOne(wallet, walletId).setName("wallet");
         Property categoryId = transaction.addLongProperty("categoryId").notNull().getProperty();
         transaction.addToOne(category, categoryId).setName("category");
+        Property subcategoryId = transaction.addLongProperty("subcategoryId").getProperty();
+        transaction.addToOne(subcategory,subcategoryId).setName("subcategory");
         return transaction;
     }
 }

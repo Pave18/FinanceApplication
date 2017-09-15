@@ -20,6 +20,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
-
+    <FrameLayout
+        android:layout_gravity="bottom"
+        android:id="@+id/content_empty_main"
+        android:layout_width="match_parent"
+        android:layout_height="510dp"/>
 </android.support.design.widget.CoordinatorLayout>

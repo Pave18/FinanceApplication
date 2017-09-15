@@ -14,10 +14,25 @@
     <string name="title_currency">Currency</string>
     <string name="title_balance">Balance</string>
     <string name="title_icon">Icon</string>
+    <string name="title_wallet">Wallet</string>
+    <string name="title_amount">Amount</string>
+    <string name="title_category">Category</string>
+    <string name="title_date">Date</string>
+    <string name="title_description">Description</string>
+    <string name="title_photo">Photo</string>
     <string name="title_save">Save</string>
     <string name="title_wallet_insert">Wallet inserted</string>
     <string name="title_wallet_updated">Wallet updated</string>
     <string name="title_wallet_delete">Wallet delete</string>
+    <string name="title_transaction_insert">Transaction insert</string>
+    <string name="title_transaction_updated">Transaction updated</string>
+    <string name="title_transaction_delete">Transaction delete</string>
+    <string name="title_press_to_exit">Press once again to exit!</string>
+
+
+    <string name="btn_income">Income</string>
+    <string name="btn_expenses">Expenses</string>
+    <string name="btn_transfers">Transfers</string>
 
     <!--___Currency___-->
     <string name="name_byn">Belarusian Ruble</string>

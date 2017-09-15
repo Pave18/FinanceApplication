@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import by.xo.egorp.finance.R;
 import by.xo.egorp.finance.fragments.FragmentHome;
@@ -23,12 +24,13 @@ public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FragmentManager fragmentManager;
-
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
 
@@ -38,23 +40,29 @@ public class ActivityMain extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
-        fragmentManager = getFragmentManager();
 
-        fragmentManager.beginTransaction().replace(R.id.content_main, new FragmentHome()).commit();
+        fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_empty_main, new FragmentHome()).commit();
 
     }
 
+    private static long back_pressed;
+
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (back_pressed + 1500 > System.currentTimeMillis())
             super.onBackPressed();
-        }
+        else
+            Toast.makeText(getBaseContext(), R.string.title_press_to_exit, Toast.LENGTH_SHORT).show();
+        back_pressed = System.currentTimeMillis();
     }
 
     @Override
@@ -86,7 +94,6 @@ public class ActivityMain extends AppCompatActivity
         Fragment fragment = null;
         Class fragmentClass = null;
 
-
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -111,7 +118,8 @@ public class ActivityMain extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            fragmentManager.beginTransaction().replace(R.id.content_main, fragment).commit();
+
+            fragmentManager.beginTransaction().replace(R.id.content_empty_main, fragment).commit();
             item.setChecked(true);
         }
 

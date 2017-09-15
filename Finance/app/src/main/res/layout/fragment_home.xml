@@ -19,7 +19,7 @@
             <TextView
                 android:id="@+id/tvMainCurrencyTotal"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center|right"
                 android:text="10000000"
@@ -39,8 +39,8 @@
         <ListView
             android:id="@+id/lvAmountTotals"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2">
+            android:layout_height="80dp"
+            >
 
         </ListView>
 

@@ -13,7 +13,7 @@
         android:layout_marginLeft="20dp"
         android:gravity="left"
         android:text="Bel rub"
-        android:textSize="20sp" />
+        android:textSize="25sp" />
 
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_marginRight="10dp"
         android:gravity="center"
         android:text="NNN"
-        android:textSize="20sp" />
+        android:textSize="25sp" />
 
 
 </LinearLayout>

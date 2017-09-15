@@ -5,52 +5,58 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/ivWalletPic"
+        android:id="@+id/ivMoney_transfer_wallet_pic"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
         android:src="@mipmap/ic_launcher" />
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvWalletName"
+            android:id="@+id/tvMoney_transfer_category"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
             android:gravity="center|left"
-            android:text="Wallets"
+            android:text="Category"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tvBalance"
+            android:id="@+id/tvMoney_transfer_amount"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
             android:gravity="center|right"
             android:text="100.0"
-            android:textSize="15sp" />
+            android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tvWalletCurrency"
+            android:id="@+id/tvMoneyTransferWalletCurrency"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:gravity="center"
             android:text="NNN"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvMoney_transfer_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center|right"
+            android:text="20.06.2010"
             android:textSize="15sp" />
-
-
     </LinearLayout>
 
 

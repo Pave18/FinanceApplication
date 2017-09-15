@@ -25,6 +25,7 @@ public class FinanceTransaction {
     private Byte photo;
     private long walletId;
     private long categoryId;
+    private Long subcategoryId;
 
     /** Used to resolve relations */
     @Generated
@@ -46,6 +47,12 @@ public class FinanceTransaction {
     @Generated
     private transient Long category__resolvedKey;
 
+    @ToOne(joinProperty = "subcategoryId")
+    private Subcategory subcategory;
+
+    @Generated
+    private transient Long subcategory__resolvedKey;
+
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
 
@@ -58,7 +65,7 @@ public class FinanceTransaction {
     }
 
     @Generated
-    public FinanceTransaction(Long id, Boolean transactionType, Float amount, String data, String description, Byte photo, long walletId, long categoryId) {
+    public FinanceTransaction(Long id, Boolean transactionType, Float amount, String data, String description, Byte photo, long walletId, long categoryId, Long subcategoryId) {
         this.id = id;
         this.transactionType = transactionType;
         this.amount = amount;
@@ -67,6 +74,7 @@ public class FinanceTransaction {
         this.photo = photo;
         this.walletId = walletId;
         this.categoryId = categoryId;
+        this.subcategoryId = subcategoryId;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -140,6 +148,14 @@ public class FinanceTransaction {
         this.categoryId = categoryId;
     }
 
+    public Long getSubcategoryId() {
+        return subcategoryId;
+    }
+
+    public void setSubcategoryId(Long subcategoryId) {
+        this.subcategoryId = subcategoryId;
+    }
+
     /** To-one relationship, resolved on first access. */
     @Generated
     public Wallet getWallet() {
@@ -193,6 +209,31 @@ public class FinanceTransaction {
             this.category = category;
             categoryId = category.getId();
             category__resolvedKey = categoryId;
+        }
+    }
+
+    /** To-one relationship, resolved on first access. */
+    @Generated
+    public Subcategory getSubcategory() {
+        Long __key = this.subcategoryId;
+        if (subcategory__resolvedKey == null || !subcategory__resolvedKey.equals(__key)) {
+            __throwIfDetached();
+            SubcategoryDao targetDao = daoSession.getSubcategoryDao();
+            Subcategory subcategoryNew = targetDao.load(__key);
+            synchronized (this) {
+                subcategory = subcategoryNew;
+            	subcategory__resolvedKey = __key;
+            }
+        }
+        return subcategory;
+    }
+
+    @Generated
+    public void setSubcategory(Subcategory subcategory) {
+        synchronized (this) {
+            this.subcategory = subcategory;
+            subcategoryId = subcategory == null ? null : subcategory.getId();
+            subcategory__resolvedKey = subcategoryId;
         }
     }
 

@@ -1,95 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="by.xo.egorp.finance.activities.ActivityAddNewWallet">
+    tools:context="by.xo.egorp.finance.activities.ActivityMain">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarAdd_wallets"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginTop="56dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="2"
+                android:gravity="left|center"
                 android:text="@string/title_wallet_name"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
 
             <EditText
-                android:id="@+id/wallet_name"
-                android:layout_width="match_parent"
+                android:id="@+id/etWallet_name"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                android:layout_weight="3"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="2"
+                android:gravity="left|center"
                 android:text="@string/title_currency"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
 
             <Spinner
-                android:id="@+id/spinner_currencies"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:id="@+id/spinnerCurrencies"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:spinnerMode="dialog" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="2"
+                android:gravity="left|center"
                 android:text="@string/title_balance"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
 
             <EditText
-                android:id="@+id/balance"
-                android:layout_width="match_parent"
+                android:id="@+id/etBalance"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="3"
                 android:inputType="numberDecimal"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="2"
+                android:gravity="left|center"
                 android:text="@string/title_icon"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
 
             <Spinner
-                android:id="@+id/spinner_walletIcons"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </Spinner>
+                android:id="@+id/spinnerWallet_icons"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:spinnerMode="dropdown" />
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_save_wallet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_save" />
-</LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
