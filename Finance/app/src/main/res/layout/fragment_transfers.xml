@@ -4,7 +4,12 @@
     android:layout_height="match_parent"
     tools:context="by.xo.egorp.finance.fragments.TransfersFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!--This is an invisible button for saving from activations.-->
+    <Button
+        android:id="@+id/btn_save_transfer_transaction"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

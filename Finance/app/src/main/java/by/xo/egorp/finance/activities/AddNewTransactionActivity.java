@@ -1,6 +1,5 @@
 package by.xo.egorp.finance.activities;
 
-import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -15,11 +14,12 @@ import java.util.List;
 
 import by.xo.egorp.finance.R;
 import by.xo.egorp.finance.adapters.FragmentAdapter;
-import by.xo.egorp.finance.fragments.HomeFragment;
 import by.xo.egorp.finance.fragments.IncomeAndExpenditureFragment;
 import by.xo.egorp.finance.fragments.TransfersFragment;
 
 public class AddNewTransactionActivity extends AppCompatActivity {
+
+    private static int ID_TRANSFERS_FRAGMENT = 2;
 
     TabLayout mTabLayout;
     ViewPager mViewPager;
@@ -43,13 +43,10 @@ public class AddNewTransactionActivity extends AppCompatActivity {
         titles.add(getString(R.string.tab_title_expenses));
         titles.add(getString(R.string.tab_title_transfers));
 
-
         fragments = new ArrayList<>();
-        fragments.add(getFragmentFromTransaction(IncomeAndExpenditureFragment.class,
-                true, true));
-        fragments.add(getFragmentFromTransaction(IncomeAndExpenditureFragment.class,
-                true, false));
-        fragments.add(getFragmentFromTransaction(TransfersFragment.class, true));
+        fragments.add(IncomeAndExpenditureFragment.newInstance(true, true));
+        fragments.add(IncomeAndExpenditureFragment.newInstance(true, false));
+        fragments.add(TransfersFragment.newInstance(true));
         idFragment = 0;
         initViewPager(titles, fragments);
     }
@@ -67,7 +64,10 @@ public class AddNewTransactionActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             finish();
         } else if (id == R.id.action_save_wallet) {
-            fragments.get(idFragment).getView().findViewById(R.id.btn_save_transaction).callOnClick();
+            if (idFragment == ID_TRANSFERS_FRAGMENT)
+                fragments.get(idFragment).getView().findViewById(R.id.btn_save_transfer_transaction).callOnClick();
+            else
+                fragments.get(idFragment).getView().findViewById(R.id.btn_save_transaction).callOnClick();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -104,36 +104,5 @@ public class AddNewTransactionActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private Fragment getFragmentFromTransaction(Class fragmentClass, boolean newTransaction, boolean typeTransaction) {
-        Fragment fragment = null;
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("TypeTransaction", typeTransaction);
-        bundle.putBoolean("CreateNewTransaction", newTransaction);
-        fragment.setArguments(bundle);
-
-        return fragment;
-    }
-
-    private Fragment getFragmentFromTransaction(Class fragmentClass, boolean newTransaction) {
-        Fragment fragment = null;
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("CreateNewTransaction", newTransaction);
-        fragment.setArguments(bundle);
-
-        return fragment;
     }
 }

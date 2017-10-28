@@ -26,13 +26,16 @@ import by.xo.egorp.finance.dialogs.CalendarDialog;
 
 public class IncomeAndExpenditureFragment extends Fragment implements View.OnClickListener {
 
+    Button buttonSaveTransaction;
+    boolean createNew;
+    boolean transactionType;
+
     ManagementOfWallets managementOfWallets;
     ManagementOfCategories managementOfCategories;
     ManagementOfMoneyTransfers managementOfMoneyTransfers;
 
     FinanceTransaction financeTransaction;
-    boolean createNew;
-    boolean transactionType;
+
 
     DialogFragment dialogFragment;
     CalendarDialog calendarDialog;
@@ -46,21 +49,22 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
     EditText etDescription;
     Button btnAddPhoto;
 
-    Button buttonSaveTransaction;
-
-    /*public static IncomeAndExpenditureFragment newInstance(boolean myBoo) {
+    public static IncomeAndExpenditureFragment newInstance(boolean newTransaction, boolean typeTransaction) {
 
         Bundle args = new Bundle();
-        args.putBoolean(myBoo);
+        args.putBoolean("CreateNewTransaction", newTransaction);
+        args.putBoolean("TypeTransaction", typeTransaction);
 
         IncomeAndExpenditureFragment fragment = new IncomeAndExpenditureFragment();
         fragment.setArguments(args);
         return fragment;
     }
-*/
-    public IncomeAndExpenditureFragment(boolean transactionType, boolean createNew) {
-        this.createNew = createNew;
-        this.transactionType = transactionType;
+
+    private void readBundle(Bundle bundle) {
+        if (bundle != null) {
+            createNew = bundle.getBoolean("CreateNewTransaction");
+            transactionType = bundle.getBoolean("TypeTransaction");
+        }
     }
 
     @Override
@@ -68,22 +72,17 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_income_and_expenditure, null);
 
+        buttonSaveTransaction = v.findViewById(R.id.btn_save_transaction);
+        buttonSaveTransaction.setOnClickListener(this);
+
+        readBundle(getArguments());
+
         managementOfWallets = new ManagementOfWallets();
         managementOfCategories = new ManagementOfCategories();
         managementOfMoneyTransfers = new ManagementOfMoneyTransfers();
         financeTransaction = new FinanceTransaction();
 
         calendarDialog = new CalendarDialog();
-
-        //getArguments().
-
-
-                //EXAMPLE
-     /*   Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            transactionType = bundle.getBoolean("TypeTransaction");
-        }
-*/
 
 
         spinnerWallets = v.findViewById(R.id.spinner_wallet);
@@ -103,11 +102,9 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
         tvDate.setOnClickListener(this);
         tvDate.setText(calendarDialog.getDateToString());
         etDescription = v.findViewById(R.id.etDescription);
-        buttonSaveTransaction = v.findViewById(R.id.btn_save_transaction);
-        buttonSaveTransaction.setOnClickListener(this);
 
-        //handleIntent(getIntent());
-        setClickEventListener();
+
+        //handleIntent();
 
         return v;
     }
@@ -117,15 +114,20 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
         switch (view.getId()) {
             case R.id.tvDate:
                 dialogFragment = calendarDialog;
-                dialogFragment.show(getFragmentManager(), "calendarDialog");
+                dialogFragment.show(getFragmentManager(), "CalendarDialog");
+                break;
+            case R.id.btn_save_transaction:
+                if (createNew) {
+                    saveItem(getResources().getString(R.string.title_transaction_insert));
+                } else {
+                    saveItem(getResources().getString(R.string.title_transaction_updated));
+                }
                 break;
         }
     }
 
-   /* private void handleIntent(Intent intent) {
-        createNew = intent.getBooleanExtra("create", false);
-
-        if (!createNew) {
+   /* private void handleIntent() {
+              if (!createNew) {
             wallet = (Wallet) intent.getSerializableExtra("wallet");
             editTextWalletName.setText(wallet.getWalletName());
             spinnerCurrencies.setSelection(
@@ -136,18 +138,6 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
         }
     }*/
 
-    private void setClickEventListener() {
-        buttonSaveTransaction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (createNew) {
-                    saveItem(getResources().getString(R.string.title_transaction_insert));
-                } else {
-                    saveItem(getResources().getString(R.string.title_transaction_updated));
-                }
-            }
-        });
-    }
 
     private void saveItem(String mess) {
         if (checkToFinish()) {
@@ -180,7 +170,5 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
         managementOfWallets.changeOfBalance(transactionType,
                 (Wallet) spinnerWallets.getSelectedItem(),
                 Float.parseFloat(etAmount.getText().toString()));
-
-
     }
 }
