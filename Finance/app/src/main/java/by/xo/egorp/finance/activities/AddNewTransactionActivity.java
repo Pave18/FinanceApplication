@@ -21,8 +21,6 @@ import by.xo.egorp.finance.fragments.TransfersFragment;
 
 public class AddNewTransactionActivity extends AppCompatActivity {
 
-    boolean createNewFragment;
-
     TabLayout mTabLayout;
     ViewPager mViewPager;
 
@@ -45,13 +43,13 @@ public class AddNewTransactionActivity extends AppCompatActivity {
         titles.add(getString(R.string.tab_title_expenses));
         titles.add(getString(R.string.tab_title_transfers));
 
-        createNewFragment = true;
 
         fragments = new ArrayList<>();
-        fragments.add(new IncomeAndExpenditureFragment(true, createNewFragment));
-        fragments.add(new IncomeAndExpenditureFragment(false, createNewFragment));
-        fragments.add(new TransfersFragment(createNewFragment));
-
+        fragments.add(getFragmentFromTransaction(IncomeAndExpenditureFragment.class,
+                true, true));
+        fragments.add(getFragmentFromTransaction(IncomeAndExpenditureFragment.class,
+                true, false));
+        fragments.add(getFragmentFromTransaction(TransfersFragment.class, true));
         idFragment = 0;
         initViewPager(titles, fragments);
     }
@@ -108,7 +106,7 @@ public class AddNewTransactionActivity extends AppCompatActivity {
 
     }
 
-    private Fragment getFragmentFromTransaction(Class fragmentClass, boolean type) {
+    private Fragment getFragmentFromTransaction(Class fragmentClass, boolean newTransaction, boolean typeTransaction) {
         Fragment fragment = null;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -117,7 +115,23 @@ public class AddNewTransactionActivity extends AppCompatActivity {
         }
 
         Bundle bundle = new Bundle();
-        bundle.putBoolean("TypeTransaction", type);
+        bundle.putBoolean("TypeTransaction", typeTransaction);
+        bundle.putBoolean("CreateNewTransaction", newTransaction);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
+    private Fragment getFragmentFromTransaction(Class fragmentClass, boolean newTransaction) {
+        Fragment fragment = null;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("CreateNewTransaction", newTransaction);
         fragment.setArguments(bundle);
 
         return fragment;
