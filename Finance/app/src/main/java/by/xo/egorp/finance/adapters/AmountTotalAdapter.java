@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import by.xo.egorp.finance.R;
 import by.xo.egorp.finance.bal.AmountTotal;
 
-public class AdapterAmountTotal extends BaseAdapter {
+public class AmountTotalAdapter extends BaseAdapter {
 
     Context ctx;
     LayoutInflater lInflater;
     ArrayList<AmountTotal> amountTotals;
 
 
-    public AdapterAmountTotal(Context context, ArrayList<AmountTotal> amountTotals) {
+    public AmountTotalAdapter(Context context, ArrayList<AmountTotal> amountTotals) {
         ctx = context;
         this.amountTotals = amountTotals;
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

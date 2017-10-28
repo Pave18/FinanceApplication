@@ -1,8 +1,9 @@
 package by.xo.egorp.finance.fragments;
 
-import android.graphics.Color;
+
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +16,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import by.xo.egorp.finance.R;
-import by.xo.egorp.finance.adapters.AdapterWallet;
+import by.xo.egorp.finance.adapters.WalletAdapter;
 import by.xo.egorp.finance.bal.ManagementOfCategories;
 import by.xo.egorp.finance.bal.ManagementOfMoneyTransfers;
 import by.xo.egorp.finance.bal.ManagementOfWallets;
 import by.xo.egorp.finance.dao.FinanceTransaction;
 import by.xo.egorp.finance.dao.Wallet;
+import by.xo.egorp.finance.dialogs.CalendarDialog;
 
-public class FragmentIncomeAndExpenditure extends Fragment {
+public class IncomeAndExpenditureFragment extends Fragment implements View.OnClickListener {
 
     ManagementOfWallets managementOfWallets;
     ManagementOfCategories managementOfCategories;
@@ -32,18 +34,34 @@ public class FragmentIncomeAndExpenditure extends Fragment {
     boolean createNew;
     boolean transactionType;
 
-    TextView tvType;
+    DialogFragment dialogFragment;
+    CalendarDialog calendarDialog;
 
     Spinner spinnerWallets;
-    AdapterWallet adapterWallet;
-    EditText editTextAmount;
+    WalletAdapter walletAdapter;
+    EditText etAmount;
     //AdapterCategory adapterCategory;
     Spinner spinnerCategory;
-    EditText editTextDate;
-    EditText editTextDescription;
+    TextView tvDate;
+    EditText etDescription;
     Button btnAddPhoto;
 
     Button buttonSaveTransaction;
+
+    /*public static IncomeAndExpenditureFragment newInstance(boolean myBoo) {
+
+        Bundle args = new Bundle();
+        args.putBoolean(myBoo);
+
+        IncomeAndExpenditureFragment fragment = new IncomeAndExpenditureFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+*/
+    public IncomeAndExpenditureFragment(boolean transactionType, boolean createNew) {
+        this.createNew = createNew;
+        this.transactionType = transactionType;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,39 +73,38 @@ public class FragmentIncomeAndExpenditure extends Fragment {
         managementOfMoneyTransfers = new ManagementOfMoneyTransfers();
         financeTransaction = new FinanceTransaction();
 
-        Bundle bundle = this.getArguments();
+        calendarDialog = new CalendarDialog();
+
+        //getArguments().
+
+
+                //EXAMPLE
+     /*   Bundle bundle = this.getArguments();
         if (bundle != null) {
             transactionType = bundle.getBoolean("TypeTransaction");
         }
+*/
 
-        tvType = v.findViewById(R.id.tvTypeTrans);
-        if (transactionType) {
-            tvType.setText("Income!!!!");
-            tvType.setTextColor(Color.parseColor("#72d613"));
-        } else {
-            tvType.setText("Expanded!!!!");
-            tvType.setTextColor(Color.parseColor("#d6133a"));
-        }
-
-        createNew = true;
 
         spinnerWallets = v.findViewById(R.id.spinner_wallet);
-        ArrayList<Wallet> arrayAdapterWallets =
-                (ArrayList<Wallet>) managementOfWallets.getAllWallets();
-        adapterWallet = new AdapterWallet(FragmentIncomeAndExpenditure.this.getActivity(), arrayAdapterWallets);
-        spinnerWallets.setAdapter(adapterWallet);
+        ArrayList<Wallet> arrayAdapterWallets = (ArrayList<Wallet>) managementOfWallets.getAllWallets();
+        walletAdapter = new WalletAdapter(IncomeAndExpenditureFragment.this.getActivity(), arrayAdapterWallets);
+        spinnerWallets.setAdapter(walletAdapter);
 
        /* spinnerCategory = v.findViewById(R.id.spinner_category);
         ArrayList<Category> arrayCategory =
                 (ArrayList<Category>) managementOfCategories.getAllCategories();
-        adapterCategory = new AdapterCategory(FragmentIncomeAndExpenditure.this.getActivity(), arrayCategory);
+        adapterCategory = new AdapterCategory(IncomeAndExpenditureFragment.this.getActivity(), arrayCategory);
         spinnerCategory.setAdapter(adapterCategory);*/
 
 
-        editTextAmount = v.findViewById(R.id.etAmount);
-        editTextDate = v.findViewById(R.id.etDate);
-        editTextDescription = v.findViewById(R.id.etDescription);
+        etAmount = v.findViewById(R.id.etAmount);
+        tvDate = v.findViewById(R.id.tvDate);
+        tvDate.setOnClickListener(this);
+        tvDate.setText(calendarDialog.getDateToString());
+        etDescription = v.findViewById(R.id.etDescription);
         buttonSaveTransaction = v.findViewById(R.id.btn_save_transaction);
+        buttonSaveTransaction.setOnClickListener(this);
 
         //handleIntent(getIntent());
         setClickEventListener();
@@ -95,7 +112,15 @@ public class FragmentIncomeAndExpenditure extends Fragment {
         return v;
     }
 
-
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tvDate:
+                dialogFragment = calendarDialog;
+                dialogFragment.show(getFragmentManager(), "calendarDialog");
+                break;
+        }
+    }
 
    /* private void handleIntent(Intent intent) {
         createNew = intent.getBooleanExtra("create", false);
@@ -127,32 +152,35 @@ public class FragmentIncomeAndExpenditure extends Fragment {
     private void saveItem(String mess) {
         if (checkToFinish()) {
             addTransaction();
-            Toast.makeText(FragmentIncomeAndExpenditure.this.getActivity(), mess, Toast.LENGTH_SHORT).show();
+            Toast.makeText(IncomeAndExpenditureFragment.this.getActivity(), mess, Toast.LENGTH_SHORT).show();
             getActivity().finish();
         }
     }
 
     private boolean checkToFinish() {
-        if (editTextAmount.getText().length() != 0 &&
+        if (etAmount.getText().length() != 0 &&
                 spinnerWallets.getSelectedItem() != null &&
-                editTextDate.getText().length() != 0) {
+                tvDate.getText().length() != 0) {
             return true;
         }
         return false;
     }
 
     private void addTransaction() {
+
         managementOfMoneyTransfers.addMoneyTransfers(transactionType,
                 (Wallet) spinnerWallets.getSelectedItem(),
-                Float.parseFloat(editTextAmount.getText().toString()),
-                editTextDate.getText().toString(),
-                editTextDescription.getText().toString(),
+                Float.parseFloat(etAmount.getText().toString()),
+                calendarDialog.getDate(),
+                etDescription.getText().toString(),
                 (byte) 0,
                 managementOfCategories.getAllCategories().get(0),
                 null);
 
         managementOfWallets.changeOfBalance(transactionType,
                 (Wallet) spinnerWallets.getSelectedItem(),
-                Float.parseFloat(editTextAmount.getText().toString()));
+                Float.parseFloat(etAmount.getText().toString()));
+
+
     }
 }

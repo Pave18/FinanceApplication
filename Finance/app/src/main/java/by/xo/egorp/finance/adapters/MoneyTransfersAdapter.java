@@ -9,23 +9,25 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import by.xo.egorp.finance.R;
 import by.xo.egorp.finance.dao.FinanceTransaction;
 
-public class AdapterMoneyTransfers extends BaseAdapter {
+public class MoneyTransfersAdapter extends BaseAdapter {
 
     Context ctx;
     LayoutInflater lInflater;
     ArrayList<FinanceTransaction> financeTransactions;
 
-    public AdapterMoneyTransfers(Context context, ArrayList<FinanceTransaction> transactions) {
+    public MoneyTransfersAdapter(Context context, ArrayList<FinanceTransaction> transactions) {
         ctx = context;
         financeTransactions = transactions;
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
 
     @Override
     public int getCount() {
@@ -77,12 +79,24 @@ public class AdapterMoneyTransfers extends BaseAdapter {
                 .setText(tempFinanceTransaction.getWallet().getCurrency().getCurrencyCode());
 
         ((TextView) view.findViewById(R.id.tvMoney_transfer_date))
-                .setText(tempFinanceTransaction.getData());
+                .setText(parseDate(tempFinanceTransaction.getData()));
 
         return view;
     }
 
     FinanceTransaction getFinanceTransaction(int position) {
         return (FinanceTransaction) getItem(position);
+    }
+
+    String parseDate(Date date) {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        String tempString = null;
+        try {
+            tempString = df.format(date);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return tempString;
     }
 }

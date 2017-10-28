@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,12 +16,12 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import by.xo.egorp.finance.R;
-import by.xo.egorp.finance.activities.ActivityAddNewWallet;
-import by.xo.egorp.finance.adapters.AdapterWallet;
+import by.xo.egorp.finance.activities.AddNewWalletActivity;
+import by.xo.egorp.finance.adapters.WalletAdapter;
 import by.xo.egorp.finance.bal.ManagementOfWallets;
 import by.xo.egorp.finance.dao.Wallet;
 
-public class FragmentWallets extends Fragment {
+public class WalletsFragment extends Fragment {
 
     private static final int CM_DELETE_ID = 1;
     private static final int CM_UPDATE_ID = 2;
@@ -29,7 +29,7 @@ public class FragmentWallets extends Fragment {
     ManagementOfWallets managementOfWallets;
 
     ArrayList<Wallet> walletArrayList;
-    AdapterWallet adapterWallet;
+    WalletAdapter walletAdapter;
 
     ListView lvWallets;
 
@@ -42,10 +42,10 @@ public class FragmentWallets extends Fragment {
 
         walletArrayList = new ArrayList<>();
         walletArrayList.addAll(managementOfWallets.getAllWallets());
-        adapterWallet = new AdapterWallet(FragmentWallets.this.getActivity(), walletArrayList);
+        walletAdapter = new WalletAdapter(WalletsFragment.this.getActivity(), walletArrayList);
 
         lvWallets = v.findViewById(R.id.lvWallets);
-        lvWallets.setAdapter(adapterWallet);
+        lvWallets.setAdapter(walletAdapter);
         registerForContextMenu(lvWallets);
 
         FloatingActionButton fab = v.findViewById(R.id.fab_add_new_wallet);
@@ -82,7 +82,7 @@ public class FragmentWallets extends Fragment {
 
             managementOfWallets.delWallet(walletArrayList.get(acmi.position));
             walletArrayList.remove(acmi.position);
-            adapterWallet.notifyDataSetChanged();
+            walletAdapter.notifyDataSetChanged();
 
             return true;
         } else if (item.getItemId() == CM_UPDATE_ID) {
@@ -96,19 +96,19 @@ public class FragmentWallets extends Fragment {
     private void fetchWalletList() {
         walletArrayList.clear();
         walletArrayList.addAll(managementOfWallets.getAllWallets());
-        adapterWallet.notifyDataSetChanged();
+        walletAdapter.notifyDataSetChanged();
     }
 
     //For create
     private void startActivityAddNewWallet() {
-        Intent intent = new Intent(FragmentWallets.this.getActivity(), ActivityAddNewWallet.class);
+        Intent intent = new Intent(WalletsFragment.this.getActivity(), AddNewWalletActivity.class);
         intent.putExtra("create", true);
         startActivity(intent);
     }
 
     //For update
     private void startActivityAddNewWallet(Wallet wallet) {
-        Intent intent = new Intent(FragmentWallets.this.getActivity(), ActivityAddNewWallet.class);
+        Intent intent = new Intent(WalletsFragment.this.getActivity(), AddNewWalletActivity.class);
         intent.putExtra("create", false);
         intent.putExtra("wallet", (Parcelable) wallet);
         startActivity(intent);

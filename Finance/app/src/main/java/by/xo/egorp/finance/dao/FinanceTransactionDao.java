@@ -28,7 +28,7 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property TransactionType = new Property(1, Boolean.class, "transactionType", false, "TRANSACTION_TYPE");
         public final static Property Amount = new Property(2, Float.class, "amount", false, "AMOUNT");
-        public final static Property Data = new Property(3, String.class, "data", false, "DATA");
+        public final static Property Data = new Property(3, java.util.Date.class, "data", false, "DATA");
         public final static Property Description = new Property(4, String.class, "description", false, "DESCRIPTION");
         public final static Property Photo = new Property(5, Byte.class, "photo", false, "PHOTO");
         public final static Property WalletId = new Property(6, long.class, "walletId", false, "WALLET_ID");
@@ -55,7 +55,7 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"TRANSACTION_TYPE\" INTEGER," + // 1: transactionType
                 "\"AMOUNT\" REAL," + // 2: amount
-                "\"DATA\" TEXT," + // 3: data
+                "\"DATA\" INTEGER," + // 3: data
                 "\"DESCRIPTION\" TEXT," + // 4: description
                 "\"PHOTO\" INTEGER," + // 5: photo
                 "\"WALLET_ID\" INTEGER NOT NULL ," + // 6: walletId
@@ -88,9 +88,9 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
             stmt.bindDouble(3, amount);
         }
  
-        String data = entity.getData();
+        java.util.Date data = entity.getData();
         if (data != null) {
-            stmt.bindString(4, data);
+            stmt.bindLong(4, data.getTime());
         }
  
         String description = entity.getDescription();
@@ -130,9 +130,9 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
             stmt.bindDouble(3, amount);
         }
  
-        String data = entity.getData();
+        java.util.Date data = entity.getData();
         if (data != null) {
-            stmt.bindString(4, data);
+            stmt.bindLong(4, data.getTime());
         }
  
         String description = entity.getDescription();
@@ -170,7 +170,7 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getShort(offset + 1) != 0, // transactionType
             cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2), // amount
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // data
+            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // data
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // description
             cursor.isNull(offset + 5) ? null : (byte) cursor.getShort(offset + 5), // photo
             cursor.getLong(offset + 6), // walletId
@@ -185,7 +185,7 @@ public class FinanceTransactionDao extends AbstractDao<FinanceTransaction, Long>
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setTransactionType(cursor.isNull(offset + 1) ? null : cursor.getShort(offset + 1) != 0);
         entity.setAmount(cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2));
-        entity.setData(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setData(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
         entity.setDescription(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setPhoto(cursor.isNull(offset + 5) ? null : (byte) cursor.getShort(offset + 5));
         entity.setWalletId(cursor.getLong(offset + 6));

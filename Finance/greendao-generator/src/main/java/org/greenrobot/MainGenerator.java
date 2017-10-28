@@ -108,7 +108,7 @@ public class MainGenerator {
         transaction.addIdProperty().primaryKey().autoincrement();
         transaction.addBooleanProperty("transactionType");
         transaction.addFloatProperty("amount");
-        transaction.addStringProperty("data");
+        transaction.addDateProperty("data");
         transaction.addStringProperty("description");
         transaction.addByteProperty("photo");
 

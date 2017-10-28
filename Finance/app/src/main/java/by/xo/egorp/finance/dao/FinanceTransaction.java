@@ -20,7 +20,7 @@ public class FinanceTransaction {
     private Long id;
     private Boolean transactionType;
     private Float amount;
-    private String data;
+    private java.util.Date data;
     private String description;
     private Byte photo;
     private long walletId;
@@ -65,7 +65,7 @@ public class FinanceTransaction {
     }
 
     @Generated
-    public FinanceTransaction(Long id, Boolean transactionType, Float amount, String data, String description, Byte photo, long walletId, long categoryId, Long subcategoryId) {
+    public FinanceTransaction(Long id, Boolean transactionType, Float amount, java.util.Date data, String description, Byte photo, long walletId, long categoryId, Long subcategoryId) {
         this.id = id;
         this.transactionType = transactionType;
         this.amount = amount;
@@ -108,11 +108,11 @@ public class FinanceTransaction {
         this.amount = amount;
     }
 
-    public String getData() {
+    public java.util.Date getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(java.util.Date data) {
         this.data = data;
     }
 

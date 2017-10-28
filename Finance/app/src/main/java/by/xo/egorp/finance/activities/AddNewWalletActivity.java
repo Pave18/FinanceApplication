@@ -13,14 +13,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import by.xo.egorp.finance.R;
-import by.xo.egorp.finance.adapters.AdapterCurrency;
-import by.xo.egorp.finance.adapters.AdapterWalletIcon;
+import by.xo.egorp.finance.adapters.CurrencyAdapter;
+import by.xo.egorp.finance.adapters.WalletIconAdapter;
 import by.xo.egorp.finance.bal.ManagementOfWallets;
 import by.xo.egorp.finance.dao.Currency;
 import by.xo.egorp.finance.dao.Wallet;
 import by.xo.egorp.finance.dao.WalletIcon;
 
-public class ActivityAddNewWallet extends AppCompatActivity {
+public class AddNewWalletActivity extends AppCompatActivity {
 
     ManagementOfWallets managementOfWallets;
     Wallet wallet;
@@ -29,18 +29,21 @@ public class ActivityAddNewWallet extends AppCompatActivity {
 
     EditText etWalletName;
     Spinner spinCurrencies;
-    AdapterCurrency adapterCurrency;
+    CurrencyAdapter currencyAdapter;
     EditText etBalance;
     Spinner spinnerWalletIcons;
-    AdapterWalletIcon adapterWalletIcon;
+    WalletIconAdapter walletIconAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_wallet);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAdd_wallets);
-
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         managementOfWallets = new ManagementOfWallets();
         wallet = new Wallet();
@@ -54,13 +57,13 @@ public class ActivityAddNewWallet extends AppCompatActivity {
 
         ArrayList<Currency> arrayAdapterCurrency =
                 (ArrayList<Currency>) managementOfWallets.getAllCurrencies();
-        adapterCurrency = new AdapterCurrency(this, arrayAdapterCurrency);
-        spinCurrencies.setAdapter(adapterCurrency);
+        currencyAdapter = new CurrencyAdapter(this, arrayAdapterCurrency);
+        spinCurrencies.setAdapter(currencyAdapter);
 
         ArrayList<WalletIcon> arrayAdapterWalletIcon =
                 (ArrayList<WalletIcon>) managementOfWallets.getAllWalletIcons();
-        adapterWalletIcon = new AdapterWalletIcon(this, arrayAdapterWalletIcon);
-        spinnerWalletIcons.setAdapter(adapterWalletIcon);
+        walletIconAdapter = new WalletIconAdapter(this, arrayAdapterWalletIcon);
+        spinnerWalletIcons.setAdapter(walletIconAdapter);
 
         handleIntent(getIntent());
     }
@@ -82,6 +85,8 @@ public class ActivityAddNewWallet extends AppCompatActivity {
                 saveItem(getResources().getString(R.string.title_wallet_updated));
             }
             return true;
+        }else if (id == android.R.id.home) {
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

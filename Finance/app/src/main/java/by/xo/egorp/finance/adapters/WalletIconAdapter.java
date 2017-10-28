@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import by.xo.egorp.finance.R;
 import by.xo.egorp.finance.dao.WalletIcon;
 
-public class AdapterWalletIcon extends BaseAdapter {
+public class WalletIconAdapter extends BaseAdapter {
 
     Context ctx;
     LayoutInflater lInflater;
     ArrayList<WalletIcon> walletIconList;
 
-    public AdapterWalletIcon(Context context, ArrayList<WalletIcon> walletIcons) {
+    public WalletIconAdapter(Context context, ArrayList<WalletIcon> walletIcons) {
         ctx = context;
         walletIconList = walletIcons;
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

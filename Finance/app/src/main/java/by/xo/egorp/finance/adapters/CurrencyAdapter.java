@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import by.xo.egorp.finance.R;
 import by.xo.egorp.finance.dao.Currency;
 
-public class AdapterCurrency extends BaseAdapter {
+public class CurrencyAdapter extends BaseAdapter {
 
     Context ctx;
     LayoutInflater lInflater;
     ArrayList<Currency> currencyArrayList;
 
-    public AdapterCurrency(Context context, ArrayList<Currency> currencies) {
+    public CurrencyAdapter(Context context, ArrayList<Currency> currencies) {
         ctx = context;
         currencyArrayList = currencies;
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

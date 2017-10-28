@@ -1,11 +1,9 @@
 package by.xo.egorp.finance.activities;
 
-import android.app.FragmentManager;
 import android.os.Bundle;
-
-import android.app.Fragment;
-
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,23 +14,23 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import by.xo.egorp.finance.R;
-import by.xo.egorp.finance.fragments.FragmentHome;
-import by.xo.egorp.finance.fragments.FragmentMoneyTransfers;
-import by.xo.egorp.finance.fragments.FragmentWallets;
+import by.xo.egorp.finance.fragments.HomeFragment;
+import by.xo.egorp.finance.fragments.MoneyTransfersFragment;
+import by.xo.egorp.finance.fragments.WalletsFragment;
 
-public class ActivityMain extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Toolbar toolbar;
     FragmentManager fragmentManager;
     NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -44,9 +42,8 @@ public class ActivityMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
 
-        fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_empty_main, new FragmentHome()).commit();
-
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_empty_main, new HomeFragment()).commit();
     }
 
     private static long back_pressed;
@@ -104,12 +101,15 @@ public class ActivityMain extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         } else {
+            String tittleToolbar = getResources().getString(R.string.app_name);;
             if (id == R.id.nav_home) {
-                fragmentClass = FragmentHome.class;
+                fragmentClass = HomeFragment.class;
             } else if (id == R.id.nav_wallets) {
-                fragmentClass = FragmentWallets.class;
+                fragmentClass = WalletsFragment.class;
+                tittleToolbar = getResources().getString(R.string.toolbar_wallets);
             } else if (id == R.id.nav_money_transfers) {
-                fragmentClass = FragmentMoneyTransfers.class;
+                fragmentClass = MoneyTransfersFragment.class;
+                tittleToolbar = getResources().getString(R.string.toolbar_transactions);
             }
 
             try {
@@ -118,7 +118,7 @@ public class ActivityMain extends AppCompatActivity
                 e.printStackTrace();
             }
 
-
+            toolbar.setTitle(tittleToolbar);
             fragmentManager.beginTransaction().replace(R.id.content_empty_main, fragment).commit();
             item.setChecked(true);
         }

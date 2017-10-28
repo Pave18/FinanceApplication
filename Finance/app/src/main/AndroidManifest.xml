@@ -11,24 +11,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.ActivitySplashScreen"
-            android:label="@string/app_name"
+            android:name=".activities.SplashScreenActivity"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ActivityMain"
+            android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.WalletsActivity"
-            android:label="@string/title_activity_wallets"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.ActivityAddNewWallet" />
-        <activity android:name=".activities.ActivityAddNewTransaction"></activity>
+            android:name=".activities.AddNewWalletActivity"
+            android:label="@string/toolbar_add_wallet"/>
+        <activity
+            android:name=".activities.AddNewTransactionActivity"
+            android:label="@string/toolbar_add_transaction"/>
     </application>
 
 </manifest>

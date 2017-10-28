@@ -1,6 +1,8 @@
 package by.xo.egorp.finance.bal;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import by.xo.egorp.finance.AppController;
@@ -24,7 +26,7 @@ public class ManagementOfMoneyTransfers {
         getAllMoneyTransfers();
     }
 
-    public void addMoneyTransfers(boolean type, Wallet wallet, float amount, String date, String description,
+    public void addMoneyTransfers(boolean type, Wallet wallet, float amount, Date date, String description,
                                   Byte photo, Category category, Subcategory subcategory) {
         FinanceTransaction tempFinanceTransaction = new FinanceTransaction();
 

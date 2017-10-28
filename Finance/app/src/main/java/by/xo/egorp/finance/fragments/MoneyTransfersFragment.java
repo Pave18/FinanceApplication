@@ -2,9 +2,9 @@ package by.xo.egorp.finance.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,13 +16,13 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import by.xo.egorp.finance.R;
-import by.xo.egorp.finance.activities.ActivityAddNewTransaction;
-import by.xo.egorp.finance.adapters.AdapterMoneyTransfers;
+import by.xo.egorp.finance.activities.AddNewTransactionActivity;
+import by.xo.egorp.finance.adapters.MoneyTransfersAdapter;
 import by.xo.egorp.finance.bal.ManagementOfMoneyTransfers;
 import by.xo.egorp.finance.bal.ManagementOfWallets;
 import by.xo.egorp.finance.dao.FinanceTransaction;
 
-public class FragmentMoneyTransfers extends Fragment {
+public class MoneyTransfersFragment extends Fragment {
 
     private static final int CM_DELETE_ID = 1;
     private static final int CM_UPDATE_ID = 2;
@@ -31,7 +31,7 @@ public class FragmentMoneyTransfers extends Fragment {
     ManagementOfMoneyTransfers managementOfMoneyTransfers;
 
     ArrayList<FinanceTransaction> financeTransactionArrayList;
-    AdapterMoneyTransfers adapterMoneyTransfers;
+    MoneyTransfersAdapter moneyTransfersAdapter;
 
     ListView lvMoneyTransfers;
 
@@ -45,11 +45,11 @@ public class FragmentMoneyTransfers extends Fragment {
 
         financeTransactionArrayList = new ArrayList<>();
         financeTransactionArrayList.addAll(managementOfMoneyTransfers.getAllMoneyTransfers());
-        adapterMoneyTransfers = new AdapterMoneyTransfers
-                (FragmentMoneyTransfers.this.getActivity(), financeTransactionArrayList);
+        moneyTransfersAdapter = new MoneyTransfersAdapter
+                (MoneyTransfersFragment.this.getActivity(), financeTransactionArrayList);
 
         lvMoneyTransfers = v.findViewById(R.id.lvMoney_transfers);
-        lvMoneyTransfers.setAdapter(adapterMoneyTransfers);
+        lvMoneyTransfers.setAdapter(moneyTransfersAdapter);
         registerForContextMenu(lvMoneyTransfers);
         FloatingActionButton fab = v.findViewById(R.id.fabAdd_new_transfers);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +89,7 @@ public class FragmentMoneyTransfers extends Fragment {
 
             managementOfMoneyTransfers.delMoneyTransfers(tempFinanceTransaction);
             financeTransactionArrayList.remove(acmi.position);
-            adapterMoneyTransfers.notifyDataSetChanged();
+            moneyTransfersAdapter.notifyDataSetChanged();
             return true;
         } else if (item.getItemId() == CM_UPDATE_ID) {
             startActivityAddNewMoneyTransfer(financeTransactionArrayList.get(acmi.position));
@@ -103,20 +103,20 @@ public class FragmentMoneyTransfers extends Fragment {
     private void fetchWalletList() {
         financeTransactionArrayList.clear();
         financeTransactionArrayList.addAll(managementOfMoneyTransfers.getAllMoneyTransfers());
-        adapterMoneyTransfers.notifyDataSetChanged();
+        moneyTransfersAdapter.notifyDataSetChanged();
     }
 
     //For create
     private void startActivityAddNewMoneyTransfer() {
-        Intent intent = new Intent(FragmentMoneyTransfers.this.getActivity(), ActivityAddNewTransaction.class);
+        Intent intent = new Intent(MoneyTransfersFragment.this.getActivity(), AddNewTransactionActivity.class);
         intent.putExtra("create", true);
         startActivity(intent);
     }
 
     //For update
     private void startActivityAddNewMoneyTransfer(FinanceTransaction financeTransaction) {
-        Intent intent = new Intent(FragmentMoneyTransfers.this.getActivity(),
-                ActivityAddNewTransaction.class);
+        Intent intent = new Intent(MoneyTransfersFragment.this.getActivity(),
+                AddNewTransactionActivity.class);
         intent.putExtra("create", false);
         intent.putExtra("wallet", (Parcelable) financeTransaction);
         startActivity(intent);

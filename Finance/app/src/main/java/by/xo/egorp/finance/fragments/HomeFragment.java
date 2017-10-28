@@ -1,8 +1,7 @@
 package by.xo.egorp.finance.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import by.xo.egorp.finance.R;
-import by.xo.egorp.finance.adapters.AdapterAmountTotal;
+import by.xo.egorp.finance.adapters.AmountTotalAdapter;
 import by.xo.egorp.finance.bal.AmountTotal;
 import by.xo.egorp.finance.bal.ManagementOfWallets;
 
 
-public class FragmentHome extends Fragment {
+public class HomeFragment extends Fragment {
 
     ManagementOfWallets managementOfWallets;
 
@@ -29,7 +28,7 @@ public class FragmentHome extends Fragment {
     String mainCurrencyCod = "BYN";
 
     ListView lvAmountTotals;
-    AdapterAmountTotal adapterAmountTotal;
+    AmountTotalAdapter amountTotalAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,9 +48,9 @@ public class FragmentHome extends Fragment {
         tvMainCurrencyCode = v.findViewById(R.id.tvMainCurrencyCode);
         tvMainCurrencyCode.setText(totalAmountMainCurrency.getCurrency().getCurrencyCode());
 
-        adapterAmountTotal = new AdapterAmountTotal(FragmentHome.this.getActivity(), amountTotals);
+        amountTotalAdapter = new AmountTotalAdapter(HomeFragment.this.getActivity(), amountTotals);
         lvAmountTotals = v.findViewById(R.id.lvAmountTotals);
-        lvAmountTotals.setAdapter(adapterAmountTotal);
+        lvAmountTotals.setAdapter(amountTotalAdapter);
         return v;
     }
 }

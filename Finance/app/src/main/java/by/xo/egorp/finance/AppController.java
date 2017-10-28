@@ -12,20 +12,15 @@ import by.xo.egorp.finance.dao.DaoSession;
 
 public class AppController extends Application {
 
-    //With encryption, there is complexity so for now "False".
-    public static final boolean ENCRYPTED = false;
-
     private static DaoSession daoSession;
-
 
     @Override
     public void onCreate() {
         super.onCreate();
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper
-                (this, ENCRYPTED ? "XO-finance-db-encrypted" : "XO-finance-db");
-        Database db = ENCRYPTED ? helper.getEncryptedWritableDb("financial-secret") : helper.getWritableDb();
-        daoSession = new DaoMaster(db).newSession();
 
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "XO-finance-db");
+        Database db = helper.getWritableDb();
+        daoSession = new DaoMaster(db).newSession();
 
         fillingWithBaseValues();
     }

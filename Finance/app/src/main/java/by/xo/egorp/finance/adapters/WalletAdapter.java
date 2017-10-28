@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import by.xo.egorp.finance.R;
 import by.xo.egorp.finance.dao.Wallet;
 
-public class AdapterWallet extends BaseAdapter {
+public class WalletAdapter extends BaseAdapter {
 
     Context ctx;
     LayoutInflater lInflater;
     ArrayList<Wallet> walletArrayList;
 
-    public AdapterWallet(Context context, ArrayList<Wallet> wallets) {
+    public WalletAdapter(Context context, ArrayList<Wallet> wallets) {
         ctx = context;
         walletArrayList = wallets;
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

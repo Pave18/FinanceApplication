@@ -28,11 +28,20 @@
     <string name="title_transaction_updated">Transaction updated</string>
     <string name="title_transaction_delete">Transaction delete</string>
     <string name="title_press_to_exit">Press once again to exit!</string>
+    <string name="title_yesterday">Yesterday</string>
+    <string name="title_today">Today</string>
+    <string name="title_ok">OK</string>
+    <string name="title_cancel">Cancel</string>
 
+    <string name="toolbar_add_transaction">Add Transaction</string>
+    <string name="toolbar_transactions">Transactions</string>
+    <string name="toolbar_add_wallet">Add Wallet</string>
+    <string name="toolbar_wallets">Wallets</string>
 
-    <string name="btn_income">Income</string>
-    <string name="btn_expenses">Expenses</string>
-    <string name="btn_transfers">Transfers</string>
+    <string name="tab_title_income">Income</string>
+    <string name="tab_title_expenses">Expenses</string>
+    <string name="tab_title_transfers">Transfers</string>
+
 
     <!--___Currency___-->
     <string name="name_byn">Belarusian Ruble</string>
