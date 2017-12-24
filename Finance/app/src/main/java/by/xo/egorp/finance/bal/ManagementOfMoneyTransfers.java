@@ -19,17 +19,21 @@ public class ManagementOfMoneyTransfers {
     private FinanceTransactionDao financeTransactionDao;
     private List<FinanceTransaction> financeTransactions;
 
+    private ManagementOfWallets managementOfWallets;
+
     public ManagementOfMoneyTransfers() {
         daoSession = AppController.getDaoSession();
         financeTransactionDao = daoSession.getFinanceTransactionDao();
         financeTransactions = new ArrayList<>();
         getAllMoneyTransfers();
+
+        managementOfWallets = new ManagementOfWallets();
     }
 
-    public void addMoneyTransfers(boolean type, Wallet wallet, float amount, Date date, String description,
-                                  Byte photo, Category category, Subcategory subcategory) {
+    public void addMoneyTransfers(boolean type, Wallet wallet, float amount, Date date,
+                                  String description, Byte photo,
+                                  Category category, Subcategory subcategory) {
         FinanceTransaction tempFinanceTransaction = new FinanceTransaction();
-
 
         tempFinanceTransaction.setTransactionType(type);
         if (type)
@@ -44,6 +48,8 @@ public class ManagementOfMoneyTransfers {
         tempFinanceTransaction.setSubcategory(subcategory);
 
         financeTransactionDao.insert(tempFinanceTransaction);
+
+        managementOfWallets.changeOfBalance(type, wallet, amount);
     }
 
     public void delMoneyTransfers(FinanceTransaction financeTransaction) {

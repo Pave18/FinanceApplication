@@ -26,6 +26,12 @@ public class TransfersFragment extends Fragment implements View.OnClickListener 
         return fragment;
     }
 
+    private void readBundle(Bundle bundle) {
+        if (bundle != null) {
+            createNew = bundle.getBoolean("CreateNewTransaction");
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,6 +40,7 @@ public class TransfersFragment extends Fragment implements View.OnClickListener 
         buttonSaveTransaction = v.findViewById(R.id.btn_save_transfer_transaction);
         buttonSaveTransaction.setOnClickListener(this);
 
+        readBundle(getArguments());
 
         return v;
     }
@@ -54,7 +61,7 @@ public class TransfersFragment extends Fragment implements View.OnClickListener 
 
     private void saveItem(String mess) {
         if (checkToFinish()) {
-            addTransaction();
+            ///addTransaction();
             Toast.makeText(TransfersFragment.this.getActivity(), mess, Toast.LENGTH_SHORT).show();
             getActivity().finish();
         }

@@ -1,18 +1,196 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="by.xo.egorp.finance.fragments.TransfersFragment">
 
-    <!--This is an invisible button for saving from activations.-->
-    <Button
-        android:id="@+id/btn_save_transfer_transaction"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
-
-    <TextView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <!--This is an invisible button for saving from activations.-->
+        <Button
+            android:id="@+id/btn_save_transfer_transaction"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutWalletFrom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:baselineAligned="false"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:minWidth="100dp"
+                android:text="@string/title_from"
+                android:textSize="23sp" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/etAmountFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="0.00"
+            android:inputType="number|numberSigned|numberDecimal"
+            android:selectAllOnFocus="false"
+            android:singleLine="false"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutWalletFrom" />
+
+        <TextView
+            android:id="@+id/tvAmountFromCODE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="20dp"
+            android:text="BYN"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/etAmountFrom"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutWalletFrom" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutWalletTo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:baselineAligned="false"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etAmountFrom">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:minWidth="100dp"
+                android:text="@string/title_to"
+                android:textSize="23sp" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/etAmountTO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="0.00"
+            android:inputType="number|numberSigned|numberDecimal"
+            android:selectAllOnFocus="false"
+            android:singleLine="false"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.485"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutWalletTo" />
+
+        <TextView
+            android:id="@+id/tvAmountToCODE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="20dp"
+            android:text="BYN"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/etAmountTO"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutWalletTo" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etAmountTO">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:minWidth="100dp"
+                android:text="@string/title_date"
+                android:textSize="23sp" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right|center"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/title_description"
+            android:inputType="text"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutDate" />
+
+
+        <Button
+            android:id="@+id/btnCamera"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnGallery"
+            app:layout_constraintTop_toBottomOf="@+id/etDescription" />
+
+        <Button
+            android:id="@+id/btnGallery"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/btnCamera"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etDescription" />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

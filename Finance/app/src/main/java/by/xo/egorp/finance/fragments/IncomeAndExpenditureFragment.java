@@ -1,6 +1,8 @@
 package by.xo.egorp.finance.fragments;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -26,6 +28,8 @@ import by.xo.egorp.finance.dialogs.CalendarDialog;
 
 public class IncomeAndExpenditureFragment extends Fragment implements View.OnClickListener {
 
+    private static final int REQUEST_DATE = 1;
+
     Button buttonSaveTransaction;
     boolean createNew;
     boolean transactionType;
@@ -33,9 +37,6 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
     ManagementOfWallets managementOfWallets;
     ManagementOfCategories managementOfCategories;
     ManagementOfMoneyTransfers managementOfMoneyTransfers;
-
-    FinanceTransaction financeTransaction;
-
 
     DialogFragment dialogFragment;
     CalendarDialog calendarDialog;
@@ -47,10 +48,9 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
     Spinner spinnerCategory;
     TextView tvDate;
     EditText etDescription;
-    Button btnAddPhoto;
+    Button btnCamera, btnGallery;
 
     public static IncomeAndExpenditureFragment newInstance(boolean newTransaction, boolean typeTransaction) {
-
         Bundle args = new Bundle();
         args.putBoolean("CreateNewTransaction", newTransaction);
         args.putBoolean("TypeTransaction", typeTransaction);
@@ -80,7 +80,6 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
         managementOfWallets = new ManagementOfWallets();
         managementOfCategories = new ManagementOfCategories();
         managementOfMoneyTransfers = new ManagementOfMoneyTransfers();
-        financeTransaction = new FinanceTransaction();
 
         calendarDialog = new CalendarDialog();
 
@@ -114,6 +113,7 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
         switch (view.getId()) {
             case R.id.tvDate:
                 dialogFragment = calendarDialog;
+                dialogFragment.setTargetFragment(this, REQUEST_DATE);
                 dialogFragment.show(getFragmentManager(), "CalendarDialog");
                 break;
             case R.id.btn_save_transaction:
@@ -123,6 +123,18 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
                     saveItem(getResources().getString(R.string.title_transaction_updated));
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_DATE:
+                    tvDate.setText(data.getStringExtra(CalendarDialog.TAG_DATE_SELECTED));
+                    break;
+            }
         }
     }
 
@@ -137,7 +149,6 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
                     Integer.parseInt(wallet.getWalletIcon().getId().toString()));
         }
     }*/
-
 
     private void saveItem(String mess) {
         if (checkToFinish()) {
@@ -157,7 +168,6 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
     }
 
     private void addTransaction() {
-
         managementOfMoneyTransfers.addMoneyTransfers(transactionType,
                 (Wallet) spinnerWallets.getSelectedItem(),
                 Float.parseFloat(etAmount.getText().toString()),
@@ -166,9 +176,5 @@ public class IncomeAndExpenditureFragment extends Fragment implements View.OnCli
                 (byte) 0,
                 managementOfCategories.getAllCategories().get(0),
                 null);
-
-        managementOfWallets.changeOfBalance(transactionType,
-                (Wallet) spinnerWallets.getSelectedItem(),
-                Float.parseFloat(etAmount.getText().toString()));
     }
 }

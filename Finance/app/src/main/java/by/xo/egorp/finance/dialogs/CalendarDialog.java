@@ -1,5 +1,7 @@
 package by.xo.egorp.finance.dialogs;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -7,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -17,8 +18,7 @@ import by.xo.egorp.finance.R;
 
 public class CalendarDialog extends DialogFragment implements View.OnClickListener {
 
-    final boolean YESTERDAY = false;
-    final boolean TODAY = true;
+    public static final String TAG_DATE_SELECTED = "date";
 
     Date beforeCalendar;
     Calendar calendar;
@@ -87,8 +87,11 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
         time_pressed = System.currentTimeMillis();
     }
 
+    // Passing the value to the IncomeAndExpenditureFragment. (onActivityResult)
     private void exitCalendarDialog() {
-        ((TextView) getActivity().findViewById(R.id.tvDate)).setText(getDateToString());
+        Intent intent = new Intent();
+        intent.putExtra(TAG_DATE_SELECTED, getDateToString());
+        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
         dismiss();
     }
 
@@ -105,7 +108,7 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
     }
 
     private String convertDataToString(Date date) {
-        return DateFormat.getDateInstance(DateFormat.SHORT).format(date);
+        return DateFormat.getDateInstance(DateFormat.MEDIUM).format(date);
     }
 
     void checkClick() {
