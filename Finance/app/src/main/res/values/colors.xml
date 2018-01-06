@@ -2,4 +2,5 @@
 <resources>
     <color name="colorBackgroundSplashScreen">#3A404A</color>
     <color name="colorBackgroundTabLayout">#21262D</color>
+    <color name="accent_material_dark">#990000</color>
 </resources>

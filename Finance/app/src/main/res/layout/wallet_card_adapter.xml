@@ -56,7 +56,6 @@
             app:layout_constraintVertical_bias="0.100000024"
             android:layout_marginLeft="4dp" />
 
-
         <TextView
             android:id="@+id/totalWalletTextView"
             style="@style/TextAppearance.AppCompat.Large"
@@ -76,7 +75,7 @@
             tools:ignore="UnknownId" />
 
         <ImageView
-            android:id="@+id/walletStar"
+            android:id="@+id/walletStarImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -91,7 +90,7 @@
             android:layout_marginLeft="8dp" />
 
         <ImageView
-            android:id="@+id/walletSetting"
+            android:id="@+id/walletSettingImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -107,7 +106,7 @@
             android:layout_marginRight="8dp" />
 
         <ImageView
-            android:id="@+id/walletType"
+            android:id="@+id/walletTypeImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -120,7 +119,7 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
-            android:id="@+id/walletsIcon"
+            android:id="@+id/walletIconImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -130,6 +129,20 @@
             app:layout_constraintBottom_toTopOf="@+id/nameWalletTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/addWalletImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_add_new_wallet" />
 
 
     </android.support.constraint.ConstraintLayout>

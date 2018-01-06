@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import by.xo.egorp.finance.R;
@@ -110,7 +111,7 @@ public class WalletsFragment extends Fragment {
     private void startActivityAddNewWallet(Wallet wallet) {
         Intent intent = new Intent(WalletsFragment.this.getActivity(), AddNewWalletActivity.class);
         intent.putExtra("create", false);
-        intent.putExtra("wallet", (Parcelable) wallet);
+        intent.putExtra("walletId", wallet.getId());
         startActivity(intent);
     }
 }

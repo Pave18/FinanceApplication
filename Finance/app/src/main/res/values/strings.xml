@@ -5,6 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_settings_wallet">Settings wallet</string>
+    <string name="action_new_wallet">New wallet</string>
     <string name="action_home">Home</string>
     <string name="action_wallets">Wallets</string>
     <string name="action_money_transfers">Money transfers</string>
@@ -38,6 +40,7 @@
     <string name="toolbar_add_transaction">Add Transaction</string>
     <string name="toolbar_transactions">Transactions</string>
     <string name="toolbar_add_wallet">Add Wallet</string>
+    <string name="toolbar_update_wallets">Update Wallet</string>
     <string name="toolbar_wallets">Wallets</string>
 
     <string name="tab_title_income">Income</string>
@@ -87,6 +90,7 @@
     </string-array>
 
     <string name="name_pets">Pets</string>
+    <string name="action_delete">Delete</string>
     <string-array name="pets">
         <item>Veterinary services</item>
         <item>Feed</item>

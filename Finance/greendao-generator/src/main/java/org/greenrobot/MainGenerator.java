@@ -64,6 +64,7 @@ public class MainGenerator {
         wallet.addIdProperty().primaryKey().autoincrement();
         wallet.addStringProperty("walletName");
         wallet.addFloatProperty("balance");
+        wallet.addBooleanProperty("mainWallet");
 
         Property currencyId = wallet.addLongProperty("currencyId").notNull().getProperty();
         wallet.addToOne(currency, currencyId).setName("currency");

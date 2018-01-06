@@ -3,6 +3,7 @@ package by.xo.egorp.finance.bal;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import by.xo.egorp.finance.AppController;
@@ -48,6 +49,20 @@ public class ManagementOfWallets {
         return walletIcons;
     }
 
+    public Wallet findWalletFromId(long id) {
+
+        Wallet tempWallet = new Wallet();
+        
+        for (Wallet w : getAllWallets()) {
+            if (Objects.equals(w.getId(), id)) {
+                tempWallet = w;
+                break;
+            }
+        }
+
+        return tempWallet;
+    }
+
     public void addCurrency(String currencyName, String currencyCode) {
         Currency tempCurrency = new Currency();
         tempCurrency.setCurrencyName(currencyName);
@@ -72,6 +87,17 @@ public class ManagementOfWallets {
         walletDao.insert(tempWallet);
     }
 
+    public void updateWallet(Wallet wallet, String walletName, Currency walletCurrency,
+                             Float walletBalance, WalletIcon walletIcon) {
+
+        wallet.setWalletName(walletName);
+        wallet.setCurrency(walletCurrency);
+        wallet.setBalance(walletBalance);
+        wallet.setWalletIcon(walletIcon);
+
+        walletDao.update(wallet);
+    }
+
     public void delWallet(Wallet wallet) {
         walletDao.delete(wallet);
         getAllWallets();
@@ -85,8 +111,7 @@ public class ManagementOfWallets {
 
     public void changeOfBalance(boolean income, Wallet wallet, float amount) {
 
-        Wallet tempWallet = wallet;
-        float newBalance = tempWallet.getBalance();
+        float newBalance = wallet.getBalance();
 
         if (income) {
             newBalance += amount;
@@ -94,9 +119,9 @@ public class ManagementOfWallets {
             newBalance -= amount;
         }
 
-        tempWallet.setBalance(newBalance);
+        wallet.setBalance(newBalance);
 
-        walletDao.update(tempWallet);
+        walletDao.update(wallet);
     }
 
     private AmountTotal totalAmountMainCurrency;
@@ -177,7 +202,6 @@ public class ManagementOfWallets {
 
         return tempTotals;
     }
-
 
 
 }

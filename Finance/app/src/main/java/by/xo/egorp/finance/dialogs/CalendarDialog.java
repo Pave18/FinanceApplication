@@ -1,14 +1,20 @@
 package by.xo.egorp.finance.dialogs;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CalendarView;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -27,11 +33,46 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
         calendar = Calendar.getInstance();
     }
 
-    CalendarView calendarView;
+    MaterialCalendarView calendarView;
     Button btnYesterday;
     Button btnToday;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public static CalendarDialog newInstance() {
+
+        Bundle args = new Bundle();
+
+        CalendarDialog fragment = new CalendarDialog();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+
+        builder.setView(onCreateView());
+
+        builder.setPositiveButton(R.string.title_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                exitCalendarDialog();
+            }
+        });
+
+        builder.setNegativeButton(R.string.title_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                calendar.setTime(beforeCalendar);
+            }
+        });
+
+
+        return builder.create();
+    }
+
+    public View onCreateView() {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.dialog_calendar, null);
 
         beforeCalendar = getDate();
@@ -45,18 +86,19 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
         calendarView = v.findViewById(R.id.calendarView);
         v.findViewById(R.id.calendarView).setOnClickListener(this);
         setDateOnCalendarView();
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+
+        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
-            public void onSelectedDayChange(CalendarView view, int year, int monthOfYear, int dayOfMonth) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            public void onDateSelected(@NonNull MaterialCalendarView materialCalendarView, @NonNull CalendarDay calendarDay, boolean b) {
+                calendar.set(Calendar.YEAR, calendarDay.getYear());
+                calendar.set(Calendar.MONTH, calendarDay.getMonth());
+                calendar.set(Calendar.DAY_OF_MONTH, calendarDay.getDay());
                 checkClick();
             }
         });
 
-        v.findViewById(R.id.btn_OK).setOnClickListener(this);
-        v.findViewById(R.id.btn_CANCEL).setOnClickListener(this);
+
         return v;
     }
 
@@ -71,11 +113,6 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
             case R.id.btn_today:
                 calendar = today();
                 break;
-            //These buttons do not need a double tap, to immediately exit.
-            case R.id.btn_CANCEL:
-                calendar.setTime(beforeCalendar);
-            case R.id.btn_OK:
-                exitCalendarDialog();
         }
 
         checkClick();
@@ -96,7 +133,8 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
     }
 
     void setDateOnCalendarView() {
-        calendarView.setDate(getDate().getTime(), true, true);
+        calendarView.clearSelection();
+        calendarView.setDateSelected(calendar, true);
     }
 
     public Date getDate() {

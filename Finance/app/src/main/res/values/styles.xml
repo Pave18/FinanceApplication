@@ -1,16 +1,22 @@
 <resources>
-    <style name="SplashScreenTheme">
-        <item name="android:windowBackground">@drawable/background_splash_screen</item>
-    </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="MainFinanceTheme" parent="Theme.AppCompat.NoActionBar">
+    <!-- Customize your theme here. -->
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="MainFinanceTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="MainFinanceTheme.SplashScreenTheme">
+        <item name="android:windowBackground">@drawable/background_splash_screen</item>
+    </style>
+
+    <style name="MainFinanceTheme.Calendar" parent="TextAppearance.MaterialCalendarWidget.Date">
+        <item name="android:textColor">@color/white_date_color</item>
+    </style>
+
 
 </resources>

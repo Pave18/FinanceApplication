@@ -31,7 +31,7 @@ public class AddNewTransactionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_transaction);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAdd_transaction);
+        Toolbar toolbar = findViewById(R.id.toolbarAdd_transaction);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -53,7 +53,7 @@ public class AddNewTransactionActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_save, menu);
+        getMenuInflater().inflate(R.menu.action_save_delete, menu);
         return true;
     }
 
@@ -74,8 +74,8 @@ public class AddNewTransactionActivity extends AppCompatActivity {
     }
 
     private void initViewPager(List<String> titles, List<Fragment> fragments) {
-        mTabLayout = (TabLayout) findViewById(R.id.tab_layout_transaction);
-        mViewPager = (ViewPager) findViewById(R.id.view_pager_transaction);
+        mTabLayout = findViewById(R.id.tab_layout_transaction);
+        mViewPager = findViewById(R.id.view_pager_transaction);
 
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));

@@ -8,12 +8,8 @@
             android:title="@string/action_home" />
         <item
             android:id="@+id/nav_wallets"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/action_wallets" />
-        <item
-            android:id="@+id/nav_money_transfers"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/action_money_transfers" />
+            android:title="@string/action_wallets" />
     </group>
 
     <item android:title="Communicate">
