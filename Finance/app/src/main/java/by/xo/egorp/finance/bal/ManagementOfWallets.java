@@ -1,5 +1,8 @@
 package by.xo.egorp.finance.bal;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -21,10 +24,6 @@ public class ManagementOfWallets {
     private CurrencyDao currencyDao;
     private WalletDao walletDao;
 
-    private List<WalletIcon> walletIcons;
-    private List<Currency> currencies;
-    private List<Wallet> wallets;
-
     public ManagementOfWallets() {
         this.daoSession = AppController.getDaoSession();
 
@@ -45,22 +44,13 @@ public class ManagementOfWallets {
     }
 
     public List<WalletIcon> getAllWalletIcons() {
-        walletIcons = walletIconDao.loadAll();
-        return walletIcons;
+        return walletIconDao.loadAll();
     }
 
-    public Wallet findWalletFromId(long id) {
+    private int firstItem = 0;
 
-        Wallet tempWallet = new Wallet();
-        
-        for (Wallet w : getAllWallets()) {
-            if (Objects.equals(w.getId(), id)) {
-                tempWallet = w;
-                break;
-            }
-        }
-
-        return tempWallet;
+    public WalletIcon getFirstWalletIcon() {
+        return getAllWalletIcons().get(firstItem);
     }
 
     public void addCurrency(String currencyName, String currencyCode) {
@@ -72,30 +62,84 @@ public class ManagementOfWallets {
     }
 
     public List<Currency> getAllCurrencies() {
-        currencies = currencyDao.loadAll();
-        return currencies;
+        return currencyDao.loadAll();
     }
 
-    public void addWallet(String walletName, Currency walletCurrency,
-                          Float walletBalance, WalletIcon walletIcon) {
+    public Currency getFirstCurrency() {
+        return getAllCurrencies().get(firstItem);
+    }
+
+    public Wallet findWalletById(long id) {
+
         Wallet tempWallet = new Wallet();
 
-        tempWallet.setWalletName(walletName);
-        tempWallet.setCurrency(walletCurrency);
-        tempWallet.setBalance(walletBalance);
-        tempWallet.setWalletIcon(walletIcon);
+        for (Wallet w : getAllWallets()) {
+            if (Objects.equals(w.getId(), id)) {
+                tempWallet = w;
+                break;
+            }
+        }
+
+        return tempWallet;
+    }
+
+    public void addWallet(Boolean mainWallet, String nameWallet, Currency currencyWallet,
+                          String balanceWallet, WalletIcon iconWallet, Integer backgroundWallet) {
+
+
+        Float tempBalance = round(Float.parseFloat(balanceWallet), 2);
+
+        Wallet tempWallet = new Wallet();
+
+        tempWallet.setMainWallet(findMainWallet(mainWallet));
+        tempWallet.setWalletName(nameWallet);
+        tempWallet.setBalance(tempBalance);
+        tempWallet.setCurrency(currencyWallet);
+        tempWallet.setWalletIcon(iconWallet);
+        tempWallet.setBackground(backgroundWallet);
+
         walletDao.insert(tempWallet);
     }
 
-    public void updateWallet(Wallet wallet, String walletName, Currency walletCurrency,
-                             Float walletBalance, WalletIcon walletIcon) {
+    public void updateWallet(Wallet wallet, Boolean mainWallet, String nameWallet, Currency currencyWallet,
+                             String balanceWallet, WalletIcon iconWallet, Integer backgroundWallet) {
 
-        wallet.setWalletName(walletName);
-        wallet.setCurrency(walletCurrency);
-        wallet.setBalance(walletBalance);
-        wallet.setWalletIcon(walletIcon);
+
+        Float tempBalance = round(Float.parseFloat(balanceWallet), 2);
+
+        wallet.setMainWallet(findMainWallet(mainWallet));
+        wallet.setWalletName(nameWallet);
+        wallet.setBalance(tempBalance);
+        wallet.setCurrency(currencyWallet);
+        wallet.setWalletIcon(iconWallet);
+        wallet.setBackground(backgroundWallet);
 
         walletDao.update(wallet);
+    }
+
+    private static float round(float number, int scale) {
+        int pow = 10;
+        for (int i = 1; i < scale; i++)
+            pow *= 10;
+        float tmp = number * pow;
+        return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / pow;
+    }
+
+    private boolean findMainWallet(boolean switchMain) {
+
+        if (getAllWallets().size() == 0) {
+            return true;
+        } else if (switchMain && getAllWallets().size() != 0) {
+            for (Wallet w : getAllWallets()) {
+                if (w.getMainWallet()) {
+                    w.setMainWallet(false);
+                    walletDao.update(w);
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void delWallet(Wallet wallet) {
@@ -105,8 +149,20 @@ public class ManagementOfWallets {
 
 
     public List<Wallet> getAllWallets() {
-        wallets = walletDao.loadAll();
-        return wallets;
+       /* List<Wallet> tempWalletsList = walletDao.loadAll();
+
+        //Search for the main purse and transfer it to the first position.
+        if (tempWalletsList.size() != 0) {
+            for (Wallet w : tempWalletsList) {
+                if (w.getMainWallet()) {
+                    Wallet wallet = w;
+                    tempWalletsList.remove(w);
+                }
+            }
+        }*/
+
+
+        return walletDao.loadAll();
     }
 
     public void changeOfBalance(boolean income, Wallet wallet, float amount) {

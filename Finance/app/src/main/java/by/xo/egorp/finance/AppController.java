@@ -41,7 +41,7 @@ public class AppController extends Application {
         ManagementOfCategories managementOfCategories = new ManagementOfCategories();
 
         if (managementOfWallets.getAllWalletIcons().size() == 0) {
-            managementOfWallets.addWalletIcon(R.drawable.ic_menu_camera);
+            managementOfWallets.addWalletIcon(R.drawable.ic_work_black_24dp);
             managementOfWallets.addWalletIcon(R.drawable.ic_menu_gallery);
             managementOfWallets.addWalletIcon(R.drawable.ic_menu_slideshow);
         }

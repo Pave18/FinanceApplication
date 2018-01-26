@@ -6,7 +6,8 @@ android {
     defaultConfig {
         applicationId "by.xo.egorp.finance"
         minSdkVersion 21
-        targetSdkVersion 21
+        targetSdkVersion 26
+        versionCode 1
         versionName '0.1alfa'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

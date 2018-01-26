@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorBackgroundSplashScreen">#3A404A</color>
     <color name="colorBackgroundTabLayout">#21262D</color>
     <color name="accent_material_dark">#990000</color>
+    <color name="background_material_dark">#3A404A</color>
+
+
+
+    <color name="transparent">#00ffffff</color>
+    <color name="color_line">#FFAAAAAA</color>
+
+    <!--Colors for wallets background-->
+    <color name="circle_red">#ff0000</color>
+    <color name="circle_green">#2fff00</color>
+    <color name="circle_blue">#0033ff</color>
+    <color name="circle_yellow">#f7ff00</color>
+    <color name="circle_orange">#ff6a00</color>
+    <color name="circle_pig">#ff006f</color>
+    <color name="circle_purple">#ff00f2</color>
 </resources>

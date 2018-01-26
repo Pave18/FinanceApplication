@@ -151,8 +151,8 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
 
     void checkClick() {
         //dell background
-        btnToday.setBackgroundColor(0x00000000);
-        btnYesterday.setBackgroundColor(0x00000000);
+        btnToday.setBackgroundColor(getResources().getColor(R.color.transparent));
+        btnYesterday.setBackgroundColor(getResources().getColor(R.color.transparent));
         if (getDateToString().equals(convertDataToString(today().getTime()))) {
             btnToday.setBackgroundResource(R.color.colorBackgroundTabLayout);
         } else if (getDateToString().equals(convertDataToString(yesterday().getTime()))) {

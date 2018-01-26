@@ -2,7 +2,8 @@
 
     <!-- Base application theme. -->
     <style name="MainFinanceTheme" parent="Theme.AppCompat.NoActionBar">
-    <!-- Customize your theme here. -->
+        <!-- Customize your theme here. -->
+        <item name="android:colorBackground">@color/background_material_dark</item>
     </style>
 
     <style name="MainFinanceTheme.NoActionBar">
@@ -18,5 +19,19 @@
         <item name="android:textColor">@color/white_date_color</item>
     </style>
 
+    <style name="SettingColumnStyle">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="SettingColumnStyle.Circle">
+        <item name="android:src">@drawable/ic_circle_24dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
 
 </resources>

@@ -28,8 +28,10 @@ public class WalletDao extends AbstractDao<Wallet, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property WalletName = new Property(1, String.class, "walletName", false, "WALLET_NAME");
         public final static Property Balance = new Property(2, Float.class, "balance", false, "BALANCE");
-        public final static Property CurrencyId = new Property(3, long.class, "currencyId", false, "CURRENCY_ID");
-        public final static Property WalletIconId = new Property(4, long.class, "walletIconId", false, "WALLET_ICON_ID");
+        public final static Property MainWallet = new Property(3, Boolean.class, "mainWallet", false, "MAIN_WALLET");
+        public final static Property Background = new Property(4, Integer.class, "background", false, "BACKGROUND");
+        public final static Property CurrencyId = new Property(5, long.class, "currencyId", false, "CURRENCY_ID");
+        public final static Property WalletIconId = new Property(6, long.class, "walletIconId", false, "WALLET_ICON_ID");
     }
 
     private DaoSession daoSession;
@@ -51,8 +53,10 @@ public class WalletDao extends AbstractDao<Wallet, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"WALLET_NAME\" TEXT," + // 1: walletName
                 "\"BALANCE\" REAL," + // 2: balance
-                "\"CURRENCY_ID\" INTEGER NOT NULL ," + // 3: currencyId
-                "\"WALLET_ICON_ID\" INTEGER NOT NULL );"); // 4: walletIconId
+                "\"MAIN_WALLET\" INTEGER," + // 3: mainWallet
+                "\"BACKGROUND\" INTEGER," + // 4: background
+                "\"CURRENCY_ID\" INTEGER NOT NULL ," + // 5: currencyId
+                "\"WALLET_ICON_ID\" INTEGER NOT NULL );"); // 6: walletIconId
     }
 
     /** Drops the underlying database table. */
@@ -79,8 +83,18 @@ public class WalletDao extends AbstractDao<Wallet, Long> {
         if (balance != null) {
             stmt.bindDouble(3, balance);
         }
-        stmt.bindLong(4, entity.getCurrencyId());
-        stmt.bindLong(5, entity.getWalletIconId());
+ 
+        Boolean mainWallet = entity.getMainWallet();
+        if (mainWallet != null) {
+            stmt.bindLong(4, mainWallet ? 1L: 0L);
+        }
+ 
+        Integer background = entity.getBackground();
+        if (background != null) {
+            stmt.bindLong(5, background);
+        }
+        stmt.bindLong(6, entity.getCurrencyId());
+        stmt.bindLong(7, entity.getWalletIconId());
     }
 
     @Override
@@ -101,8 +115,18 @@ public class WalletDao extends AbstractDao<Wallet, Long> {
         if (balance != null) {
             stmt.bindDouble(3, balance);
         }
-        stmt.bindLong(4, entity.getCurrencyId());
-        stmt.bindLong(5, entity.getWalletIconId());
+ 
+        Boolean mainWallet = entity.getMainWallet();
+        if (mainWallet != null) {
+            stmt.bindLong(4, mainWallet ? 1L: 0L);
+        }
+ 
+        Integer background = entity.getBackground();
+        if (background != null) {
+            stmt.bindLong(5, background);
+        }
+        stmt.bindLong(6, entity.getCurrencyId());
+        stmt.bindLong(7, entity.getWalletIconId());
     }
 
     @Override
@@ -122,8 +146,10 @@ public class WalletDao extends AbstractDao<Wallet, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // walletName
             cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2), // balance
-            cursor.getLong(offset + 3), // currencyId
-            cursor.getLong(offset + 4) // walletIconId
+            cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0, // mainWallet
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // background
+            cursor.getLong(offset + 5), // currencyId
+            cursor.getLong(offset + 6) // walletIconId
         );
         return entity;
     }
@@ -133,8 +159,10 @@ public class WalletDao extends AbstractDao<Wallet, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setWalletName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setBalance(cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2));
-        entity.setCurrencyId(cursor.getLong(offset + 3));
-        entity.setWalletIconId(cursor.getLong(offset + 4));
+        entity.setMainWallet(cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0);
+        entity.setBackground(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setCurrencyId(cursor.getLong(offset + 5));
+        entity.setWalletIconId(cursor.getLong(offset + 6));
      }
     
     @Override

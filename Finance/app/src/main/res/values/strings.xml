@@ -13,9 +13,11 @@
 
     <string name="title_activity_wallets">WalletsActivity</string>
     <string name="title_wallet_name">Wallet name</string>
+    <string name="title_main_wallet">Main wallet</string>
+    <string name="title_balance_and_currency">Balance and currency</string>
     <string name="title_currency">Currency</string>
     <string name="title_balance">Balance</string>
-    <string name="title_icon">Icon</string>
+    <string name="title_background_and_icon">Background and icon</string>
     <string name="title_wallet">Wallet</string>
     <string name="title_amount">Amount</string>
     <string name="title_category">Category</string>
@@ -36,6 +38,8 @@
     <string name="title_cancel">Cancel</string>
     <string name="title_from">From</string>
     <string name="title_to">To</string>
+
+    <string name="message_delete_wallet">Are you sure you want to delete this wallet?</string>
 
     <string name="toolbar_add_transaction">Add Transaction</string>
     <string name="toolbar_transactions">Transactions</string>

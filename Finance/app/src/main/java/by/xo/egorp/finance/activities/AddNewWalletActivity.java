@@ -3,6 +3,7 @@ package by.xo.egorp.finance.activities;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -51,7 +52,9 @@ public class AddNewWalletActivity extends AppCompatActivity {
 
         readIntent(getIntent());
 
-        Toolbar toolbar = findViewById(R.id.toolbarAdd_wallets);
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAdd_wallets);
         if(createNew){
             toolbar.setTitle(getString(R.string.toolbar_add_wallet));
         }else {
@@ -64,10 +67,10 @@ public class AddNewWalletActivity extends AppCompatActivity {
         }
 
 
-        etWalletName = findViewById(R.id.etWallet_name);
-        spinCurrencies = findViewById(R.id.spinnerCurrencies);
-        etBalance = findViewById(R.id.etBalance);
-        spinnerWalletIcons = findViewById(R.id.spinnerWallet_icons);
+        etWalletName = (EditText) findViewById(R.id.etWallet_name);
+        spinCurrencies = (Spinner) findViewById(R.id.spinnerCurrencies);
+        etBalance = (EditText) findViewById(R.id.etBalance);
+        spinnerWalletIcons = (Spinner) findViewById(R.id.spinnerWallet_icons);
 
         ArrayList<Currency> arrayAdapterCurrency =
                 (ArrayList<Currency>) managementOfWallets.getAllCurrencies();
@@ -147,15 +150,15 @@ public class AddNewWalletActivity extends AppCompatActivity {
         if (checkToFinish()) {
 
             if (createNew) {
-                managementOfWallets.addWallet(etWalletName.getText().toString(),
+            /*    managementOfWallets.addWallet(etWalletName.getText().toString(),
                         (Currency) spinCurrencies.getSelectedItem(),
                         Float.parseFloat(etBalance.getText().toString()),
-                        (WalletIcon) spinnerWalletIcons.getSelectedItem());
+                        (WalletIcon) spinnerWalletIcons.getSelectedItem());*/
             } else {
-                managementOfWallets.updateWallet(wallet, etWalletName.getText().toString(),
+               /* managementOfWallets.updateWallet(wallet, etWalletName.getText().toString(),
                         (Currency) spinCurrencies.getSelectedItem(),
                         Float.parseFloat(etBalance.getText().toString()),
-                        (WalletIcon) spinnerWalletIcons.getSelectedItem());
+                        (WalletIcon) spinnerWalletIcons.getSelectedItem());*/
             }
 
             Toast.makeText(this, mess, Toast.LENGTH_SHORT).show();
