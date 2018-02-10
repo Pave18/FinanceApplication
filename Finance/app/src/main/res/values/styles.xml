@@ -1,37 +1,20 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="MainFinanceTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:colorBackground">@color/background_material_dark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="MainFinanceTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="MainFinanceTheme.SplashScreenTheme">
-        <item name="android:windowBackground">@drawable/background_splash_screen</item>
-    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="MainFinanceTheme.Calendar" parent="TextAppearance.MaterialCalendarWidget.Date">
-        <item name="android:textColor">@color/white_date_color</item>
-    </style>
-
-    <style name="SettingColumnStyle">
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:padding">10dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="SettingColumnStyle.Circle">
-        <item name="android:src">@drawable/ic_circle_24dp</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>
