@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#21262D</color>
+    <color name="colorPrimaryDark">#3A404A</color>
+    <color name="colorAccent">#990000</color>
+
+    <color name="color_line">#FFAAAAAA</color>
+
+    <!--Colors for wallets background-->
+    <color name="background_red">#ff8a80</color>
+    <color name="background_orange">#fed17e</color>
+    <color name="background_yellow">#ffff8d</color>
+    <color name="background_green">#cbff90</color>
+    <color name="background_aeroblue">#A6FFEB</color>
+    <color name="background_malibu">#7ED8FD</color>
+    <color name="background_blue">#81b1fd</color>
+    <color name="background_heliotrope">#b188fe</color>
+    <color name="background_pink">#f6bbcf</color>
+    <color name="background_swirl">#d5ccc7</color>
+    <color name="background_iron">#cfd7da</color>
 </resources>
