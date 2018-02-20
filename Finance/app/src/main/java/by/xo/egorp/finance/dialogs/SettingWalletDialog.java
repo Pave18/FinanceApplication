@@ -1,8 +1,10 @@
 package by.xo.egorp.finance.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -19,11 +21,28 @@ import by.xo.egorp.finance.dao.Currency;
 import by.xo.egorp.finance.dao.Wallet;
 import by.xo.egorp.finance.dao.WalletIcon;
 
-/**
- * Created by egorp on 13.02.2018.
- */
+public class SettingWalletDialog extends DialogFragment {
 
-public class SettingWalletDialog extends DialogFragment implements View.OnClickListener {
+    public static final int DELETE_ID = 1;
+    public static final int UPDATE_ID = 2;
+    public static final int CREATE_ID = 3;
+
+
+    public interface EditWalletDialogListener {
+        void onFinishEditDialogFragment(int resultId, Wallet wallet);
+    }
+
+    EditWalletDialogListener editWalletDialogListener;
+
+    public void setOnClickListener(EditWalletDialogListener listener) {
+        this.editWalletDialogListener = listener;
+    }
+
+    private void resultClickButton(int id, Wallet wallet) {
+        if (editWalletDialogListener != null) {
+            editWalletDialogListener.onFinishEditDialogFragment(id, wallet);
+        }
+    }
 
     ManagementOfWallets managementOfWallets;
     Wallet wallet;
@@ -44,27 +63,6 @@ public class SettingWalletDialog extends DialogFragment implements View.OnClickL
     Integer backgroundWallet;
 
 
-    public static SettingWalletDialog newInstance() {
-
-        Bundle args = new Bundle();
-        args.putBoolean("CreateNew", true);
-
-        SettingWalletDialog fragment = new SettingWalletDialog();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static SettingWalletDialog newInstance(Long idWallet) {
-
-        Bundle args = new Bundle();
-        args.putBoolean("CreateNew", false);
-        args.putLong("IdWallet", idWallet);
-
-        SettingWalletDialog fragment = new SettingWalletDialog();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
             createNew = bundle.getBoolean("CreateNew");
@@ -75,20 +73,23 @@ public class SettingWalletDialog extends DialogFragment implements View.OnClickL
         }
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         managementOfWallets = new ManagementOfWallets();
-        wallet = new Wallet();
+
 
         readBundle(getArguments());
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
         if (createNew) {
             builder.setTitle(R.string.action_new_wallet);
         } else {
             builder.setTitle(R.string.action_settings_wallet);
         }
+
         builder.setView(onCreateView());
 
         builder.setPositiveButton(R.string.title_ok, new DialogInterface.OnClickListener() {
@@ -96,8 +97,10 @@ public class SettingWalletDialog extends DialogFragment implements View.OnClickL
             public void onClick(DialogInterface dialog, int which) {
                 if (createNew) {
                     saveItem(getString(R.string.title_wallet_insert));
+                    resultClickButton(CREATE_ID, wallet);
                 } else {
                     saveItem(getString(R.string.title_wallet_updated));
+                    resultClickButton(UPDATE_ID, wallet);
                 }
             }
         });
@@ -119,7 +122,7 @@ public class SettingWalletDialog extends DialogFragment implements View.OnClickL
                             .setMessage(R.string.message_delete_wallet)
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    managementOfWallets.delWallet(wallet);
+                                    resultClickButton(DELETE_ID, wallet);
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -137,7 +140,7 @@ public class SettingWalletDialog extends DialogFragment implements View.OnClickL
     }
 
     public View onCreateView() {
-        View v =  getActivity().getLayoutInflater().inflate(R.layout.dialog_setting_wallet, null);
+        @SuppressLint("InflateParams") View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_setting_wallet, null);
         currencyW = managementOfWallets.getFirstCurrency();
         iconW = managementOfWallets.getFirstWalletIcon();
         backgroundWallet = android.R.color.transparent;
@@ -150,7 +153,20 @@ public class SettingWalletDialog extends DialogFragment implements View.OnClickL
                 if (isChecked) {
                     mainW = true;
                 } else {
-                    mainW = false;
+                    if (!createNew && wallet.getMainWallet()) {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+                        alertDialog.setMessage(R.string.message_for_main_wallet)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                })
+                                .show();
+                        mainWallet.setChecked(true);
+                    } else {
+                        mainW = false;
+                    }
                 }
             }
         });
@@ -179,45 +195,40 @@ public class SettingWalletDialog extends DialogFragment implements View.OnClickL
 
         createCircleView();
 
-
-        ifUpdate();
+        setDate();
         return v;
     }
 
-    private void createCircleView(){
+    private void createCircleView() {
       /*   check =R.drawable.ic_check_white_24dp;
         ImageView circleDefault = v.findViewById(R.id.circle_default);
         circleDefault.set(R.drawable.ic_check_white_24dp);*/
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    private void ifUpdate() {
+    @SuppressLint("SetTextI18n")
+    private void setDate() {
         if (!createNew) {
             mainWallet.setChecked(wallet.getMainWallet());
             nameWallet.setText(wallet.getWalletName());
             balanceWallet.setText(wallet.getBalance().toString());
             currencyWallet.setText(wallet.getCurrency().getCurrencyCode());
             iconWallet.setImageResource(wallet.getWalletIcon().getWalletPic());
-
-
         }
     }
+
 
     private void saveItem(String mess) {
         if (checkToFinish()) {
 
             if (createNew) {
-                managementOfWallets.addWallet(mainW, nameWallet.getText().toString(), currencyW,
+                wallet = managementOfWallets.returnWallet(mainW,
+                        nameWallet.getText().toString(), currencyW,
                         balanceWallet.getText().toString(), iconW, backgroundWallet);
             } else {
-                managementOfWallets.updateWallet(wallet, mainW, nameWallet.getText().toString(), currencyW,
+                wallet = managementOfWallets.returnWallet(wallet, mainW,
+                        nameWallet.getText().toString(), currencyW,
                         balanceWallet.getText().toString(), iconW, backgroundWallet);
             }
-
             Toast.makeText(getActivity(), mess, Toast.LENGTH_SHORT).show();
         }
     }
@@ -230,4 +241,5 @@ public class SettingWalletDialog extends DialogFragment implements View.OnClickL
         } else
             return false;
     }
+
 }

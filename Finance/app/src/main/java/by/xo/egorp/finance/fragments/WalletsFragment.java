@@ -1,8 +1,6 @@
 package by.xo.egorp.finance.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -26,6 +25,8 @@ import by.xo.egorp.finance.adapters.WalletCardPagerAdapter;
 import by.xo.egorp.finance.bal.ManagementOfMoneyTransfers;
 import by.xo.egorp.finance.bal.ManagementOfWallets;
 import by.xo.egorp.finance.dao.FinanceTransaction;
+import by.xo.egorp.finance.dao.Wallet;
+import by.xo.egorp.finance.dialogs.SettingWalletDialog;
 
 public class WalletsFragment extends Fragment {
     private static final int CM_DELETE_ID = 1;
@@ -37,12 +38,11 @@ public class WalletsFragment extends Fragment {
     ArrayList<FinanceTransaction> financeTransactionArrayList;
     MoneyTransfersAdapter moneyTransfersAdapter;
 
+    ViewPager mViewPager;
+    WalletCardPagerAdapter walletCardPagerAdapter;
+    ShadowTransformer mCardShadowTransformer;
+
     ListView lvMoneyTransfers;
-
-    private ViewPager mViewPager;
-    private WalletCardPagerAdapter walletCardPagerAdapter;
-    private ShadowTransformer mCardShadowTransformer;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,8 +54,26 @@ public class WalletsFragment extends Fragment {
 
         mViewPager = v.findViewById(R.id.viewPager);
 
-        walletCardPagerAdapter = new WalletCardPagerAdapter( getFragmentManager());
-        walletCardPagerAdapter.addCardItems(managementOfWallets.getAllWallets());
+        SettingWalletDialog settingWalletDialog = new SettingWalletDialog();
+        settingWalletDialog.setOnClickListener(new SettingWalletDialog.EditWalletDialogListener() {
+            @Override
+            public void onFinishEditDialogFragment(int resultId, Wallet wallet) {
+                if (resultId == SettingWalletDialog.CREATE_ID) {
+                    managementOfWallets.addWallet(wallet);
+                    walletCardPagerAdapter.updateAll(managementOfWallets.getAllWallets());
+                } else if (resultId == SettingWalletDialog.UPDATE_ID) {
+                    managementOfWallets.updateWallet(wallet);
+                    walletCardPagerAdapter.update(wallet, managementOfWallets.getAllWallets());
+                } else if (resultId == SettingWalletDialog.DELETE_ID) {
+                    managementOfWallets.removeWallet(wallet);
+                    walletCardPagerAdapter.remove(wallet);
+                }
+            }
+        });
+
+        walletCardPagerAdapter = new WalletCardPagerAdapter(getFragmentManager(), settingWalletDialog);
+        walletCardPagerAdapter.addWallets(managementOfWallets.getAllWallets());
+
 
         mCardShadowTransformer = new ShadowTransformer(mViewPager, walletCardPagerAdapter);
         mCardShadowTransformer.enableScaling(true);
@@ -63,6 +81,24 @@ public class WalletsFragment extends Fragment {
         mViewPager.setAdapter(walletCardPagerAdapter);
         mViewPager.setPageTransformer(false, mCardShadowTransformer);
         mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Wallet tempWallet = walletCardPagerAdapter.getWalletAt(position);
+                //Toast.makeText(getActivity(), tempWallet.getWalletName(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 
         financeTransactionArrayList = new ArrayList<>();
         financeTransactionArrayList.addAll(managementOfMoneyTransfers.getAllMoneyTransfers());
@@ -80,6 +116,13 @@ public class WalletsFragment extends Fragment {
             }
         });
 
+        Button button = v.findViewById(R.id.testButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         return v;
     }
@@ -143,4 +186,6 @@ public class WalletsFragment extends Fragment {
         intent.putExtra("wallet", (Parcelable) financeTransaction);
         startActivity(intent);
     }
+
+
 }

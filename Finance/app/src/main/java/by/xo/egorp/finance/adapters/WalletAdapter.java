@@ -13,10 +13,6 @@ import java.util.ArrayList;
 import by.xo.egorp.finance.R;
 import by.xo.egorp.finance.dao.Wallet;
 
-/**
- * Created by egorp on 13.02.2018.
- */
-
 public class WalletAdapter extends BaseAdapter {
 
     Context ctx;
@@ -28,7 +24,6 @@ public class WalletAdapter extends BaseAdapter {
         walletArrayList = wallets;
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
 
     @Override
     public int getCount() {

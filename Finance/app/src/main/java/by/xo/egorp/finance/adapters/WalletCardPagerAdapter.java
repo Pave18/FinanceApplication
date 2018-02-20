@@ -1,7 +1,7 @@
 package by.xo.egorp.finance.adapters;
 
-
-import android.support.v4.app.DialogFragment;
+import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +24,20 @@ public class WalletCardPagerAdapter extends PagerAdapter implements CardAdapter 
     private List<CardView> mViews;
     private List<Wallet> mData;
     private float mBaseElevation;
-    FragmentManager ft;
+    private FragmentManager fragmentManager;
 
+    private SettingWalletDialog settingWalletDialog;
 
-    public WalletCardPagerAdapter(FragmentManager fragmentTransaction) {
+    public WalletCardPagerAdapter(FragmentManager fragmentManager, SettingWalletDialog settingWalletDialog) {
         mData = new ArrayList<>();
         mViews = new ArrayList<>();
-        ft = fragmentTransaction;
+        this.settingWalletDialog = settingWalletDialog;
+        this.fragmentManager = fragmentManager;
     }
 
-    public void addCardItems(List<Wallet> item) {
+    public void addWallets(List<Wallet> wallets) {
 
-        for (Wallet w : item) {
+        for (Wallet w : wallets) {
             mViews.add(null);
             mData.add(w);
         }
@@ -46,6 +49,10 @@ public class WalletCardPagerAdapter extends PagerAdapter implements CardAdapter 
 
     public float getBaseElevation() {
         return mBaseElevation;
+    }
+
+    public Wallet getWalletAt(int position) {
+        return mData.get(position);
     }
 
     @Override
@@ -67,11 +74,13 @@ public class WalletCardPagerAdapter extends PagerAdapter implements CardAdapter 
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(container.getContext())
                 .inflate(R.layout.wallet_card_adapter, container, false);
+
         container.addView(view);
-        if (position != mData.size() - 1) {
+
+        if (position != mViews.size() - 1) {
             bind(mData.get(position), view, false);
         } else {
-            bind(mData.get(position), view, true);
+            bind(null, view, true);
         }
         CardView cardView = view.findViewById(R.id.cardView);
 
@@ -85,12 +94,16 @@ public class WalletCardPagerAdapter extends PagerAdapter implements CardAdapter 
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
-        mViews.set(position, null);
+    public int getItemPosition(Object object) {
+        if (mViews.contains(object)) {
+            return mViews.indexOf(object);
+        } else {
+            return POSITION_NONE;
+        }
     }
 
     private void bind(final Wallet item, View view, boolean endElement) {
+
         TextView walletName = view.findViewById(R.id.nameWalletTextView);
         TextView balance = view.findViewById(R.id.balanceTextView);
         TextView currencyCode = view.findViewById(R.id.codeTextView);
@@ -130,22 +143,92 @@ public class WalletCardPagerAdapter extends PagerAdapter implements CardAdapter 
             setting.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Long id = item.getId();
-                    if (id != null) {
-                        showDialog(false, id);
-                    }
+                    showDialog(false, item);
                 }
             });
         }
     }
 
-    private void showDialog(boolean createNew, Long id) {
-        DialogFragment settingWalletDialog;
-        if (createNew) {
-            settingWalletDialog = SettingWalletDialog.newInstance();
-        } else {
-            settingWalletDialog = SettingWalletDialog.newInstance(id);
-        }
-        settingWalletDialog.show(ft, "SettingWalletDialog");
+    private void showDialog(boolean createNew, final Wallet wallet) {
+        Bundle args = new Bundle();
+        args.putBoolean("CreateNew", createNew);
+        if (wallet != null)
+            args.putLong("IdWallet", wallet.getId());
+
+        settingWalletDialog.setArguments(args);
+        settingWalletDialog.show(fragmentManager, "SettingWalletDialog");
     }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        container.removeView((View) object);
+    }
+
+    public void remove(Wallet wallet) {
+        mViews.remove(findPosition(wallet));
+        mData.remove(wallet);
+        notifyDataSetChanged();
+    }
+
+    public void update(Wallet wallet, List<Wallet> wallets) {
+        if (wallet.getMainWallet()) {
+            updateAll(wallets);
+        } else {
+            int position = findPositionById(wallet.getId());
+            mData.set(position, wallet);
+            mViews.set(position, null);
+            notifyDataSetChanged();
+        }
+    }
+
+    public void updateAll(List<Wallet> wallets) {
+
+        removeAll();
+
+        for (Wallet w : wallets) {
+            mViews.add(null);
+            mData.add(w);
+        }
+
+        //add end element
+        mViews.add(null);
+        mData.add(null);
+
+        notifyDataSetChanged();
+    }
+
+    private void removeAll() {
+        mViews = new ArrayList<>();
+        mData = new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
+
+    private int findPosition(Wallet wallet) {
+        int id = 0;
+
+        for (; id < mData.size(); ) {
+            if (wallet.equals(mData.get(id))) {
+                break;
+            }
+            id++;
+        }
+
+        return id;
+    }
+
+    private int findPositionById(long walletId) {
+        int id = 0;
+
+        for (; id < mData.size(); ) {
+            if (walletId == mData.get(id).getId()) {
+                break;
+            }
+            id++;
+        }
+
+        return id;
+    }
+
+
 }
